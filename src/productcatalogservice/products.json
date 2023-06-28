@@ -2,111 +2,111 @@
     "products": [
         {
             "id": "OLJCESPC7Z",
-            "name": "Sunglasses",
-            "description": "Add a modern touch to your outfits with these sleek aviator sunglasses.",
-            "picture": "/static/img/products/sunglasses.jpg",
+            "name": "Pizza Salami",
+            "description": "Delicious pizza with salami. Goold old classic.",
+            "picture": "/static/img/products/pizza_salami.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 19,
+                "units": 13,
                 "nanos": 990000000
             },
-            "categories": ["accessories"]
+            "categories": ["pizza","salami"]
         },
         {
             "id": "66VCHSJNUP",
-            "name": "Tank Top",
-            "description": "Perfectly cropped cotton tank, with a scooped neckline.",
-            "picture": "/static/img/products/tank-top.jpg",
+            "name": "Pizza Funghi",
+            "description": "Freshly made pizza with champignons",
+            "picture": "/static/img/products/pizza-funghi.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 18,
+                "units": 12,
                 "nanos": 990000000
             },
-            "categories": ["clothing", "tops"]
+            "categories": ["pizza", "funghi", "vegetarian"]
         },
         {
             "id": "1YMWWN1N4O",
-            "name": "Watch",
-            "description": "This gold-tone stainless steel watch will work with most of your outfits.",
-            "picture": "/static/img/products/watch.jpg",
+            "name": "Pizza Crudo",
+            "description": "Delicious ham, fresh rucola and cream make this one of our all-time favorites",
+            "picture": "/static/img/products/pizza-crudo.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 109,
+                "units": 15,
                 "nanos": 990000000
             },
-            "categories": ["accessories"]
+            "categories": ["pizza", "rucola", "ham"]
         },
         {
             "id": "L9ECAV7KIM",
-            "name": "Loafers",
-            "description": "A neat addition to your summer wardrobe.",
-            "picture": "/static/img/products/loafers.jpg",
+            "name": "Pizza Napoli",
+            "description": "A traditional napolitan pizza",
+            "picture": "/static/img/products/pizza-napoletana-napoli.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 89,
+                "units": 11,
                 "nanos": 990000000
             },
-            "categories": ["footwear"]
+            "categories": ["pizza", "vegetarian"]
         },
         {
             "id": "2ZYFJ3GM2N",
-            "name": "Hairdryer",
-            "description": "This lightweight hairdryer has 3 heat and speed settings. It's perfect for travel.",
-            "picture": "/static/img/products/hairdryer.jpg",
+            "name": "Pizza Sucuk",
+            "description": "Our hottest newcomer with delicious sucuk, red onions and feta",
+            "picture": "/static/img/products/pizza-spicy-sucuk.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 24,
+                "units": 13,
                 "nanos": 990000000
             },
-            "categories": ["hair", "beauty"]
+            "categories": ["pizza", "sucuk"]
         },
         {
             "id": "0PUK6V6EV0",
-            "name": "Candle Holder",
-            "description": "This small but intricate candle holder is an excellent gift.",
-            "picture": "/static/img/products/candle-holder.jpg",
+            "name": "Pizza Hawaii",
+            "description": "Pizza with ham and pineapple. Highly debated, but delicious nonetheless",
+            "picture": "/static/img/products/pizza-hawaii.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 18,
+                "units": 13,
                 "nanos": 990000000
             },
-            "categories": ["decor", "home"]
+            "categories": ["pizza", "pineapple"]
         },
         {
             "id": "LS4PSXUNUM",
-            "name": "Salt & Pepper Shakers",
-            "description": "Add some flavor to your kitchen.",
-            "picture": "/static/img/products/salt-and-pepper-shakers.jpg",
+            "name": "Pizza Spinach",
+            "description": "Get as strong as with this spinach and feta pizza!",
+            "picture": "/static/img/products/pizza-spinach-feta.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 18,
+                "units": 12,
                 "nanos": 490000000
             },
-            "categories": ["kitchen"]
+            "categories": ["pizza", "vegetarian", "spinach"]
         },
         {
             "id": "9SIQT8TOJO",
-            "name": "Bamboo Glass Jar",
-            "description": "This bamboo glass jar can hold 57 oz (1.7 l) and is perfect for any kitchen.",
-            "picture": "/static/img/products/bamboo-glass-jar.jpg",
+            "name": "Pizza Scampi",
+            "description": "Our favorite pizza with fresh scampi and lots of garlic!",
+            "picture": "/static/img/products/pizza-scampi.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 5,
+                "units": 17,
                 "nanos": 490000000
             },
-            "categories": ["kitchen"]
+            "categories": ["pizza", "scampi"]
         },
         {
             "id": "6E92ZMYYFZ",
-            "name": "Mug",
-            "description": "A simple mug with a mustard interior.",
-            "picture": "/static/img/products/mug.jpg",
+            "name": "Pizza Tuna",
+            "description": "A classic. Tuna with fresh onions.",
+            "picture": "/static/img/products/Tuna-pizza-3.jpg",
             "priceUsd": {
                 "currencyCode": "USD",
-                "units": 8,
+                "units": 14,
                 "nanos": 990000000
             },
-            "categories": ["kitchen"]
+            "categories": ["pizza", "tuna"]
         }
     ]
 }
