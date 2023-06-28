@@ -35,7 +35,7 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /recommendationservice
 
 # Grab packages from builder
-COPY --from=builder /usr/local/lib/python3.10/ /usr/local/lib/python3.10/
+COPY --from=builder /usr/local/lib/python3.7/ /usr/local/lib/python3.7/
 
 # Add the application
 COPY . .

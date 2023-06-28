@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #FROM python:3.10.8-slim@sha256:49749648f4426b31b20fca55ad854caa55ff59dc604f2f76b57d814e0a47c181 as base
-FROM arm64v8/python:3.7-slim as base
+FROM arm64v8/python:3.10-slim as base
 
 
 FROM base as builder
