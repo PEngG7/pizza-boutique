@@ -14,6 +14,7 @@
  limitations under the License.
 -->
 
+
 {{ define "order" }}
 
     {{ template "header" . }}
@@ -25,7 +26,6 @@
     </div>
 
     <main role="main" class="order">
-
         <section class="container order-complete-section">
             <div class="row">
                 <div class="col-12 text-center">
@@ -62,6 +62,207 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col">
+                    <div id="map"></div>
+                    <script>
+                    var tracking_data = {{.}}
+                    console.log(tracking_data.tracking)
+                    var city = tracking_data.tracking.address.city;
+                    var country = tracking_data.tracking.address.country;
+                    var street = tracking_data.tracking.address.street_address;
+                    var zip = tracking_data.tracking.address.zip_code;
+                    var address = street + ', ' + zip + ', ' + city + ', ' + country;
+
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open( "GET", 'https://geocode.search.hereapi.com/v1/geocode?q='+encodeURIComponent(address)+'&apiKey=JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow', false ); // false for synchronous request
+                    xmlHttp.send( null );
+                    console.log(xmlHttp.responseText);
+                    tmp = JSON.parse(xmlHttp.responseText)
+                    dest_addr = tmp.items[0].position.lat + ',' + tmp.items[0].position.lng 
+
+                    
+                        /**
+                    * Calculates and displays a car route from the Brandenburg Gate in the centre of Berlin
+                    * to Friedrichstraße Railway Station.
+                    *
+                    * A full list of available request parameters can be found in the Routing API documentation.
+                    * see: http://developer.here.com/rest-apis/documentation/routing/topics/resource-calculate-route.html
+                    *
+                    * @param {H.service.Platform} platform A stub class to access HERE services
+                    */
+                    function calculateRouteFromAtoB(platform, destination ) {
+                    var router = platform.getRoutingService(null, 8),
+                      routeRequestParams = {
+                        routingMode: 'fast',
+                        transportMode: 'car',
+                        origin: '52.5352,13.3780', 
+                        destination: destination, 
+                        return: 'polyline,turnByTurnActions,actions,instructions,travelSummary'
+                      };
+                    
+                    router.calculateRoute(
+                    routeRequestParams,
+                    onSuccess,
+                    onError
+                    );
+                    }
+                    
+                    /**
+                    * This function will be called once the Routing REST API provides a response
+                    * @param {Object} result A JSONP object representing the calculated route
+                    *
+                    * see: http://developer.here.com/rest-apis/documentation/routing/topics/resource-type-calculate-route.html
+                    */
+                    function onSuccess(result) {
+                    var route = result.routes[0];
+                    
+                    /*
+                    * The styling of the route response on the map is entirely under the developer's control.
+                    * A representative styling can be found the full JS + HTML code of this example
+                    * in the functions below:
+                    */
+                    addRouteShapeToMap(route);
+                    //addManueversToMap(route);
+                    // ... etc.
+                    }
+                    
+                    /**
+                    * This function will be called if a communication error occurs during the JSON-P request
+                    * @param {Object} error The error message received.
+                    */
+                    function onError(error) {
+                    alert('Can\'t reach the remote server');
+                    }
+                    
+                    /**
+                    * Boilerplate map initialization code starts below:
+                    */
+                    
+                    // set up containers for the map + panel
+                    var mapContainer = document.getElementById('map'),
+                    routeInstructionsContainer = document.getElementById('panel');
+                    
+                    // Step 1: initialize communication with the platform
+                    // In your own code, replace variable window.apikey with your own apikey
+                    var platform = new H.service.Platform({
+                    apikey: 'JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow'
+                    });
+                    
+                    var defaultLayers = platform.createDefaultLayers();
+                    
+                    // Step 2: initialize a map - this map is centered over Berlin
+                    var map = new H.Map(mapContainer,
+                    defaultLayers.vector.normal.map, {
+                    center: {lat: 52.5352, lng: 13.3780},
+                    zoom: 15
+                    });
+                    
+                    // add a resize listener to make sure that the map occupies the whole container
+                    window.addEventListener('resize', () => map.getViewPort().resize());
+                    
+                    // Step 3: make the map interactive
+                    // MapEvents enables the event system
+                    // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+                    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                    
+                    // Create the default UI components
+                    var ui = H.ui.UI.createDefault(map, defaultLayers);
+                
+                    
+                    /**
+                    * Creates a H.map.Polyline from the shape of the route and adds it to the map.
+                    * @param {Object} route A route as received from the H.service.RoutingService
+                    */
+                    function addRouteShapeToMap(route) {
+                    route.sections.forEach((section) => {
+                    // decode LineString from the flexible polyline
+                    let linestring = H.geo.LineString.fromFlexiblePolyline(section.polyline);
+
+
+                    // Create an outline for the route polyline:
+                    var routeOutline = new H.map.Polyline(linestring, {
+                    style: {
+                        lineWidth: 10,
+                        strokeColor: 'rgba(0, 128, 255, 0.7)',
+                        lineTailCap: 'arrow-tail',
+                        lineHeadCap: 'arrow-head'
+                    }
+                    });
+                    // Create a patterned polyline:
+                    var routeArrows = new H.map.Polyline(linestring, {
+                    style: {
+                        lineWidth: 10,
+                        fillColor: 'white',
+                        strokeColor: 'rgba(255, 255, 255, 1)',
+                        lineDash: [0, 2],
+                        lineTailCap: 'arrow-tail',
+                        lineHeadCap: 'arrow-head' }
+                    }
+                    );
+                    // create a group that represents the route line and contains
+                    // outline and the pattern
+                    var routeLine = new H.map.Group();
+                    routeLine.addObjects([routeOutline, routeArrows]);
+
+                    
+                    // Add the polyline to the map
+                    map.addObject(routeLine);
+                    // And zoom to its bounding rectangle
+                    map.getViewModel().setLookAtData({
+                      bounds: polyline.getBoundingBox()
+                    });
+                    });
+                    }
+                    
+                    /**
+                    * Creates a series of H.map.Marker points from the route and adds them to the map.
+                    * @param {Object} route A route as received from the H.service.RoutingService
+                    */
+                    function addManueversToMap(route) {
+                    var svgMarkup = '<svg width="18" height="18" ' +
+                    'xmlns="http://www.w3.org/2000/svg">' +
+                    '<circle cx="8" cy="8" r="8" ' +
+                      'fill="#1b468d" stroke="white" stroke-width="1" />' +
+                    '</svg>',
+                    dotIcon = new H.map.Icon(svgMarkup, {anchor: {x:8, y:8}}),
+                    group = new H.map.Group(),
+                    i,
+                    j;
+                    
+                    route.sections.forEach((section) => {
+                    let poly = H.geo.LineString.fromFlexiblePolyline(section.polyline).getLatLngAltArray();
+                    
+                    let actions = section.actions;
+                    // Add a marker for each maneuver
+                    for (i = 0; i < actions.length; i += 1) {
+                      let action = actions[i];
+                      var marker = new H.map.Marker({
+                        lat: poly[action.offset * 3],
+                        lng: poly[action.offset * 3 + 1]},
+                        {icon: dotIcon});
+                      marker.instruction = action.instruction;
+                      group.addObject(marker);
+                    }
+                    
+                    group.addEventListener('tap', function (evt) {
+                      map.setCenter(evt.target.getGeometry());
+                      openBubble(evt.target.getGeometry(), evt.target.instruction);
+                    }, false);
+                    
+                    // Add the maneuvers group to the map
+                    map.addObject(group);
+                    });
+                    }
+                    
+                    function toMMSS(duration) {
+                    return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
+                    }
+                    
+                    calculateRouteFromAtoB(platform, dest_addr)
+                    </script>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-12 text-center">
                     <a class="cymbal-button-primary" href="/" role="button">
                         Continue Shopping
@@ -69,6 +270,11 @@
                 </div>
             </div>
         </section>
+
+
+        
+
+
 
         {{ if $.recommendations }}
             {{ template "recommendations" $.recommendations }}

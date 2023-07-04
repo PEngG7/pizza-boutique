@@ -655,3 +655,9 @@ the rules below could be extracted.
   width: 10px;
   height: 5px;
 }
+
+#map {
+  width: 800px;
+  height: 450px;
+  background: grey;
+}

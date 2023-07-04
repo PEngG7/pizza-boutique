@@ -1,4 +1,6 @@
-# Copyright 2022 Google LLC
+#!/bin/bash -eu
+#
+# Copyright 2018 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "4.70.0"
-    }
-  }
-}
+# [START gke_shippingservice_genproto]
 
-provider "google" {
-  project = var.gcp_project_id
-  region  = var.region
-}
+PATH=$PATH:$GOPATH/bin
+protodir=../../protos
+
+protoc --go_out=plugins=grpc:genproto -I $protodir $protodir/demo.proto
+
+# [END gke_shippingservice_genproto]

@@ -99,19 +99,45 @@
 
                 <div class="col-lg-5 offset-lg-1 col-xl-4">
 
-                    <form class="cart-checkout-form" action="/cart/checkout" method="POST">
+                    <form class="cart-checkout-form" id="form-box" action="/cart/checkout" method="POST">
 
                         <div class="row">
                             <div class="col">
                                 <h3>Shipping Address</h3>
                             </div>
                         </div>
+                        
+                        <div class="form-row">
+                            <div class="col cymbal-form-field">
+                                <label for="phone">Phonenumber</label>
+                                <input type="text" name="phone" id="phone"
+                                    value="030 1234567" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-row">
+                            <div class="col cymbal-form-field">
+                                <label for="lastname">Lastname</label>
+                                <input type="text" name="lastname" id="lastname"
+                                    value="Mustermann" required>
+                            </div>
+                        </div>
+
+
+                        <div class="form-row">
+                            <div class="col cymbal-form-field">
+                                <label for="birthdate">Birthdate</label>
+                                <input type="text" name="birthdate" id="birthdate"
+                                    value="12.12.1990" required>
+                            </div>
+                        </div>
 
                         <div class="form-row">
                             <div class="col cymbal-form-field">
                                 <label for="email">E-mail Address</label>
-                                <input type="email" id="email"
-                                    name="email" value="someone@example.com" required>
+                                <input type="text" id="email"
+                                    name="email" value="veryreal@email.com" required>
                             </div>
                         </div>
 
@@ -119,7 +145,7 @@
                             <div class="col cymbal-form-field">
                                 <label for="street_address">Street Address</label>
                                 <input type="text" name="street_address"
-                                    id="street_address" value="1600 Amphitheatre Parkway" required>
+                                    id="street_address" value="Marchstraße 23" required>
                             </div>
                         </div>
 
@@ -127,7 +153,7 @@
                             <div class="col cymbal-form-field">
                                 <label for="zip_code">Zip Code</label>
                                 <input type="text"
-                                    name="zip_code" id="zip_code" value="94043" required pattern="\d{4,5}">
+                                    name="zip_code" id="zip_code" value="10587" required pattern="\d{4,5}">
                             </div>
                         </div>
 
@@ -135,21 +161,21 @@
                             <div class="col cymbal-form-field">
                                 <label for="city">City</label>
                                 <input type="text" name="city" id="city"
-                                    value="Mountain View" required>
-                                </div>
+                                    value="Berlin" required>
                             </div>
+                        </div>
 
                         <div class="form-row">
                             <div class="col-md-5 cymbal-form-field">
                                 <label for="state">State</label>
                                 <input type="text" name="state" id="state"
-                                    value="CA" required>
+                                    value="Berlin" required>
                             </div>
                             <div class="col-md-7 cymbal-form-field">
                                 <label for="country">Country</label>
                                 <input type="text" id="country"
                                     placeholder="Country Name"
-                                    name="country" value="United States" required>
+                                    name="country" value="Germany" required>
                             </div>
                         </div>
 
@@ -209,9 +235,20 @@
 
                         <div class="form-row justify-content-center">
                             <div class="col text-center">
-                                <button class="cymbal-button-primary" type="submit">
+                                <script>
+                                    function storeValues(){
+                                        localStorage.setItem("city", document.getElementById('city').value);
+                                        localStorage.setItem("state", document.getElementById('state').value);
+                                        localStorage.setItem("street", document.getElementById('street_address').value);
+                                        localStorage.setItem("country", document.getElementById('country').value);
+                                        localStorage.setItem("zip_code", document.getElementById('zip_code').value);
+                                        localStorage.setItem("email", document.getElementById('email').value);
+                                    }
+                                </script>
+                                <button class="cymbal-button-primary" onclick="storeValues()" type="submit">
                                     Place Order
                                 </button>
+                                
                             </div>
                         </div>
 

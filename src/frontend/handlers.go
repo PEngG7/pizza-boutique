@@ -25,6 +25,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"reflect"
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -325,7 +326,7 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
 	log.Debug("placing order")
-
+	fmt.Printf("Request %v", r)
 	var (
 		email         = r.FormValue("email")
 		streetAddress = r.FormValue("street_address")
@@ -338,7 +339,29 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		ccYear, _     = strconv.ParseInt(r.FormValue("credit_card_expiration_year"), 10, 32)
 		ccCVV, _      = strconv.ParseInt(r.FormValue("credit_card_cvv"), 10, 32)
 	)
+// phone			= r.Formvalue("phone")
+		// lastname = r.Formvalue("lastname")
+		// birthdate = r.Formvalue("birthdate")
+	tracking, err := pb.NewTrackingServiceClient(fe.trackSvcConn).
+		GetPersonaldata(r.Context(), &pb.TrackingRequest{
+			Phone: "030/1234567",
+			Address: &pb.Address{
+				StreetAddress: streetAddress,
+				City:          city,
+				State:         state,
+				ZipCode:       int32(zipCode),
+				Country:       country},
+			Email: email,
+			Lastname: "lastname",
+			CreditCard: &pb.CreditCardInfo{
+				CreditCardNumber:          ccNumber,
+				CreditCardExpirationMonth: int32(ccMonth),
+				CreditCardExpirationYear:  int32(ccYear),
+				CreditCardCvv:             int32(ccCVV)},
+			Birthdate: "12.11.2001",
+		})
 
+	fmt.Println(reflect.TypeOf(tracking))
 	order, err := pb.NewCheckoutServiceClient(fe.checkoutSvcConn).
 		PlaceOrder(r.Context(), &pb.PlaceOrderRequest{
 			Email: email,
@@ -350,8 +373,8 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 			UserId:       sessionID(r),
 			UserCurrency: currentCurrency(r),
 			Address: &pb.Address{
-				StreetAddress: streetAddress,
-				City:          city,
+				StreetAddress: "Sybelstr. 15",
+				City:          "Wuhan",
 				State:         state,
 				ZipCode:       int32(zipCode),
 				Country:       country},
@@ -391,6 +414,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": deploymentDetailsMap,
 		"frontendMessage":   frontendMessage,
+		"tracking": tracking.GetPd(),
 	}); err != nil {
 		log.Println(err)
 	}

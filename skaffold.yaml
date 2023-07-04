@@ -44,6 +44,8 @@ build:
     context: src/frontend
   - image: adservice
     context: src/adservice
+  - image: trackingservice
+    context: src/trackingservice
   tagPolicy:
     gitCommit: {}
   local:
