@@ -373,8 +373,8 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 			UserId:       sessionID(r),
 			UserCurrency: currentCurrency(r),
 			Address: &pb.Address{
-				StreetAddress: "Sybelstr. 15",
-				City:          "Wuhan",
+				StreetAddress: streetAddress,
+				City:          city,
 				State:         state,
 				ZipCode:       int32(zipCode),
 				Country:       country},
