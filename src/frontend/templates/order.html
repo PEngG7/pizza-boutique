@@ -48,6 +48,7 @@
             <div class="row border-bottom-solid padding-y-24">
                 <div class="col-6 pl-md-0">
                     Tracking #
+                    {{.tracking}}
                 </div>
                 <div class="col-6 pr-md-0 text-right">
                     {{.order.ShippingTrackingId}}
@@ -65,12 +66,16 @@
                 <div class="col">
                     <div id="map"></div>
                     <script>
-                    var tracking_data = {{.}}
+    
+                    console.log('test1');
+                    var tracking_data = {{.}};
+                    console.log('test2');
                     var city = tracking_data.tracking.address.city;
                     var country = tracking_data.tracking.address.country;
                     var street = tracking_data.tracking.address.street_address;
                     var zip = tracking_data.tracking.address.zip_code;
                     var address = street + ', ' + zip + ', ' + city + ', ' + country;
+                    console.log(address)
 
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.open( "GET", 'https://geocode.search.hereapi.com/v1/geocode?q='+encodeURIComponent(address)+'&apiKey=JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow', false ); // false for synchronous request
@@ -81,13 +86,13 @@
 
                     function calculateRouteFromAtoB(platform, destination ) {
                     var router = platform.getRoutingService(null, 8),
-                    outeRequestParams = {
-                        routingMode: 'fast',
-                        transportMode: 'car',
-                        origin: '52.5352,13.3780', 
-                        destination: destination, 
-                        return: 'polyline,turnByTurnActions,actions,instructions,travelSummary'
-                    };
+                        routeRequestParams = {
+                            routingMode: 'fast',
+                            transportMode: 'car',
+                            origin: '52.5352,13.3780', 
+                            destination: destination, 
+                            return: 'polyline,turnByTurnActions,actions,instructions,travelSummary'
+                        };
                     
                     router.calculateRoute(
                     routeRequestParams,
@@ -109,7 +114,7 @@
                     }
                     
 
-                    var mapContainer = document.getElementById('map'),
+                    var mapContainer = document.getElementById('map')
                     
                     var platform = new H.service.Platform({
                     apikey: 'JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow'

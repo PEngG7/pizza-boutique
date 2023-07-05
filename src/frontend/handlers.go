@@ -25,7 +25,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"reflect"
 
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
@@ -338,13 +337,14 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		ccMonth, _    = strconv.ParseInt(r.FormValue("credit_card_expiration_month"), 10, 32)
 		ccYear, _     = strconv.ParseInt(r.FormValue("credit_card_expiration_year"), 10, 32)
 		ccCVV, _      = strconv.ParseInt(r.FormValue("credit_card_cvv"), 10, 32)
+		phone         = r.FormValue("phone")
+		lastname      = r.FormValue("lastname")
+		birthdate     = r.FormValue("birthdate")
 	)
-// phone			= r.Formvalue("phone")
-		// lastname = r.Formvalue("lastname")
-		// birthdate = r.Formvalue("birthdate")
+
 	tracking, err := pb.NewTrackingServiceClient(fe.trackSvcConn).
 		GetPersonaldata(r.Context(), &pb.TrackingRequest{
-			Phone: "030/1234567",
+			Phone: phone,
 			Address: &pb.Address{
 				StreetAddress: streetAddress,
 				City:          city,
@@ -352,16 +352,15 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 				ZipCode:       int32(zipCode),
 				Country:       country},
 			Email: email,
-			Lastname: "lastname",
+			Lastname: lastname,
 			CreditCard: &pb.CreditCardInfo{
 				CreditCardNumber:          ccNumber,
 				CreditCardExpirationMonth: int32(ccMonth),
 				CreditCardExpirationYear:  int32(ccYear),
 				CreditCardCvv:             int32(ccCVV)},
-			Birthdate: "12.11.2001",
+			Birthdate: birthdate,
 		})
 
-	fmt.Println(reflect.TypeOf(tracking))
 	order, err := pb.NewCheckoutServiceClient(fe.checkoutSvcConn).
 		PlaceOrder(r.Context(), &pb.PlaceOrderRequest{
 			Email: email,

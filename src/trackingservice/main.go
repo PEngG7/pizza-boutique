@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
+	"github.com/louisloechel/purposelimiter"
 
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/shippingservice/genproto"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
@@ -82,10 +83,10 @@ func main() {
 	var srv *grpc.Server
 	if os.Getenv("DISABLE_STATS") == "" {
 		log.Info("Stats enabled, but temporarily unavailable")
-		srv = grpc.NewServer()
+		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor()))
 	} else {
 		log.Info("Stats disabled.")
-		srv = grpc.NewServer()
+		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor()))
 	}
 	svc := &server{}
 	pb.RegisterTrackingServiceServer(srv, svc)
