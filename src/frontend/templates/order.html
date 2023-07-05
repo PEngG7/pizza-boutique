@@ -31,6 +31,7 @@
                 <div class="col-12 text-center">
                     <h3>
                         Your order is complete!
+                        {{.test}}
                     </h3>
                 </div>
                 <div class="col-12 text-center">
@@ -84,12 +85,12 @@
                     tmp = JSON.parse(xmlHttp.responseText)
                     dest_addr = tmp.items[0].position.lat + ',' + tmp.items[0].position.lng 
 
-                    function calculateRouteFromAtoB(platform, destination ) {
+                    function calculateRouteFromAtoB(platform, destination, start ) {
                     var router = platform.getRoutingService(null, 8),
                         routeRequestParams = {
                             routingMode: 'fast',
                             transportMode: 'car',
-                            origin: '52.5352,13.3780', 
+                            origin: start, 
                             destination: destination, 
                             return: 'polyline,turnByTurnActions,actions,instructions,travelSummary'
                         };
@@ -203,8 +204,20 @@
                     return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
                     }
                     
-                    calculateRouteFromAtoB(platform, dest_addr)
+                    calculateRouteFromAtoB(platform, dest_addr, '52.5352,13.3780')
                     </script>
+
+                <div class="col text-center">
+                    <script>
+                        setInterval(updateMap, 3000)
+                        function updateMap(){
+                            const movements = ["52.5372, 13.3744", "52.5399, 13.3704"]
+                        }
+                    </script>
+                    <button class="cymbal-button-primary" onclick="updateMap()" type="submit">
+                        Update Map
+                    </button>
+                </div>
                 </div>
             </div>
             <div class="row">

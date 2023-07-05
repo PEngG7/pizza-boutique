@@ -25,7 +25,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
+	"google.golang.org/grpc/metadata"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
@@ -342,8 +342,10 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		birthdate     = r.FormValue("birthdate")
 	)
 
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "authorization", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwb2xpY3kiOnsiYWxsb3dlZCI6e30sImdlbmVyYWxpemVkIjp7InBob25lIjoic3RyaW5nIn0sIm5vaXNlZCI6eyJiaXJ0aGRhdGUiOiJzdHJpbmcifSwicmVkdWNlZCI6eyJlbWFpbCI6InN0cmluZyJ9fSwiZXhwIjoxNjg4NjUxNzI4LCJpc3MiOiJ0ZXN0In0.dKGpugaR9VzDCyrDjzvllpjuyJ_nnWaEFc4vvHLMiCrc2yjPDDedPh3FXuZKyTGHI7mbUfeH0erC1h8WtyLL0f94-BaPHiDc-pWoMVmpqZK_CCgZvlosnGjlk5jvV1nu9r1PW-HwNdfEBzlT71vRxUugJzfCEOS34waTkKMh_4LrbHNcYXogq0AQOkxPqW-PJZrTJvz5Qy8-ZaVZcUppi1RLzYiKsrBFjD_7AA2tMPjjdDTfmSFk0ZXiOvAfShLJPNTe4ktsnVYqR5h8jKt2BDjtUgUGYikjuouh8CcTb-LD3rUBYossJrniuRU6vkXT9zjz2Pf234RCwW0gkmA3ZQ")
+
 	tracking, err := pb.NewTrackingServiceClient(fe.trackSvcConn).
-		GetPersonaldata(r.Context(), &pb.TrackingRequest{
+		GetPersonaldata(ctx, &pb.TrackingRequest{
 			Phone: phone,
 			Address: &pb.Address{
 				StreetAddress: streetAddress,
@@ -414,6 +416,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		"deploymentDetails": deploymentDetailsMap,
 		"frontendMessage":   frontendMessage,
 		"tracking": tracking.GetPd(),
+		"test": tracking,
 	}); err != nil {
 		log.Println(err)
 	}
