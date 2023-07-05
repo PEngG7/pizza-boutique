@@ -226,10 +226,12 @@ service CheckoutService {
 message PlaceOrderRequest {
     string user_id = 1;
     string user_currency = 2;
-
     Address address = 3;
     string email = 5;
     CreditCardInfo credit_card = 6;
+    string phone = 7;
+    string birthdate = 8;
+    string lastname = 9;
 }
 
 message PlaceOrderResponse {
@@ -258,3 +260,28 @@ message Ad {
     // short advertisement text to display.
     string text = 2;
 }
+
+// ---------------Tracking Service----------
+
+service TrackingService {
+    rpc GetPersonaldata(TrackingRequest) returns (TrackingResponse) {}
+}
+
+message TrackingRequest {
+    string phone = 1;
+	Address address = 2;
+	string email = 3;
+	string lastname = 4;
+	CreditCardInfo creditCard = 5;
+	string birthdate = 6;
+}
+
+message TrackingResponse {
+    string phone = 1;
+	Address address = 2;
+	string email = 3;
+	string lastname = 4;
+	CreditCardInfo creditCard = 5;
+	string birthdate = 6;
+}
+
