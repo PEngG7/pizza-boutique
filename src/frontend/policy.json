@@ -1,0 +1,56 @@
+{
+  "services": [
+    {
+      "service1": {
+        "allowed":
+        {
+          "address": "Address"
+        },
+        "generalized":
+        {
+          "phone": "string"
+        },
+        "noised":
+        {
+          "birthdate": "string"
+        },
+        "reduced":
+        {
+          "email": "string"
+        }
+      },
+      "service2": {
+        "allowed":
+        {
+          "name": "string",
+          "street": "string",
+          "sex": "string"
+        },
+        "generalized":
+        {
+          "phoneNumber": "string"
+        },
+        "noised":
+        {
+          "age": "int"
+        },
+        "reduced":
+        {}
+      },
+      "service3": {
+        "allowed":
+        {
+          "street": "string",
+          "name": "string",
+          "age": "int",
+          "sex": "string",
+          "phoneNumber": "string"
+        },
+        "generalized": {},
+        "noised": {},
+        "reduced":
+        {}
+      }
+    }
+  ]
+}

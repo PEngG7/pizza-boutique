@@ -29,6 +29,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	jwt "github.com/Siar-Akbayin/jwt-go-auth"
+
 
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/frontend/genproto"
 	"github.com/GoogleCloudPlatform/microservices-demo/src/frontend/money"
@@ -342,7 +344,13 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		birthdate     = r.FormValue("birthdate")
 	)
 
-	ctx := metadata.AppendToOutgoingContext(context.Background(), "authorization", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwb2xpY3kiOnsiYWxsb3dlZCI6e30sImdlbmVyYWxpemVkIjp7InBob25lIjoic3RyaW5nIn0sIm5vaXNlZCI6eyJiaXJ0aGRhdGUiOiJzdHJpbmcifSwicmVkdWNlZCI6eyJlbWFpbCI6InN0cmluZyJ9fSwiZXhwIjoxNjg4NjUxNzI4LCJpc3MiOiJ0ZXN0In0.dKGpugaR9VzDCyrDjzvllpjuyJ_nnWaEFc4vvHLMiCrc2yjPDDedPh3FXuZKyTGHI7mbUfeH0erC1h8WtyLL0f94-BaPHiDc-pWoMVmpqZK_CCgZvlosnGjlk5jvV1nu9r1PW-HwNdfEBzlT71vRxUugJzfCEOS34waTkKMh_4LrbHNcYXogq0AQOkxPqW-PJZrTJvz5Qy8-ZaVZcUppi1RLzYiKsrBFjD_7AA2tMPjjdDTfmSFk0ZXiOvAfShLJPNTe4ktsnVYqR5h8jKt2BDjtUgUGYikjuouh8CcTb-LD3rUBYossJrniuRU6vkXT9zjz2Pf234RCwW0gkmA3ZQ")
+	fmt.Println("IIIIIIIIIIIIIIII")
+	token, err := jwt.GenerateToken("policy.json", "service1", "key.pem")
+	fmt.Println(err)
+	fmt.Println("HHHHHHHHHHHHHHHHHH")
+	fmt.Println(token)
+	
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "authorization", token)
 
 	tracking, err := pb.NewTrackingServiceClient(fe.trackSvcConn).
 		GetPersonaldata(ctx, &pb.TrackingRequest{
@@ -362,6 +370,10 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 				CreditCardCvv:             int32(ccCVV)},
 			Birthdate: birthdate,
 		})
+
+	fmt.Println("XXXXXXXXXXXXXXXX")
+	fmt.Println(tracking)
+	fmt.Println(err)
 
 	order, err := pb.NewCheckoutServiceClient(fe.checkoutSvcConn).
 		PlaceOrder(r.Context(), &pb.PlaceOrderRequest{
@@ -415,8 +427,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": deploymentDetailsMap,
 		"frontendMessage":   frontendMessage,
-		"tracking": tracking.GetPd(),
-		"test": tracking,
+		"tracking": tracking,
 	}); err != nil {
 		log.Println(err)
 	}

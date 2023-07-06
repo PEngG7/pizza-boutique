@@ -4,21 +4,19 @@ go 1.19
 
 require (
 	cloud.google.com/go/profiler v0.3.1
-	github.com/Siar-Akbayin/jwt-go-auth v0.1.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang/protobuf v1.5.3
-	github.com/louisloechel/purposelimiter v0.1.0
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/net v0.10.0
 	google.golang.org/grpc v1.56.1
-	go get -u github.com/Siar-Akbayin/jwt-go-auth v0.1.1
+	google.golang.org/protobuf v1.31.0
+
 )
 
 require (
 	cloud.google.com/go v0.110.0 // indirect
 	cloud.google.com/go/compute v1.19.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
@@ -31,5 +29,4 @@ require (
 	google.golang.org/api v0.114.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20230410155749-daa745c078e1 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
 )

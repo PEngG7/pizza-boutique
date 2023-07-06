@@ -31,6 +31,8 @@ RUN apk add --no-cache ca-certificates \
     busybox-extras net-tools bind-tools
 WORKDIR /src
 COPY --from=builder /go/bin/frontend /src/server
+COPY ./key.pem ./key.pem
+COPY ./policy.json ./policy.json
 COPY ./templates ./templates
 COPY ./static ./static
 
