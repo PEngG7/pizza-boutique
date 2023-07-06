@@ -1037,6 +1037,7 @@ func (c *trackingServiceClient) GetPersonaldata(ctx context.Context, in *Trackin
 // for forward compatibility
 type TrackingServiceServer interface {
 	GetPersonaldata(context.Context, *TrackingRequest) (*TrackingResponse, error)
+
 }
 
 // UnimplementedTrackingServiceServer must be embedded to have forward compatible implementations.
@@ -1046,7 +1047,7 @@ type UnimplementedTrackingServiceServer struct {
 func (UnimplementedTrackingServiceServer) GetPersonaldata(context.Context, *TrackingRequest) (*TrackingResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPersonaldata not implemented")
 }
-func (UnimplementedTrackingServiceServer) mustEmbedUnimplementedTrackingServiceServer() {}
+
 
 // UnsafeTrackingServiceServer may be embedded to opt out of forward compatibility for this service.
 // Use of this interface is not recommended, as added methods to TrackingServiceServer will

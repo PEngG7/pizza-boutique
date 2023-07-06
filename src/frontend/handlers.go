@@ -25,12 +25,12 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	"google.golang.org/grpc/metadata"
+
+	jwt "github.com/Siar-Akbayin/jwt-go-auth"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
-	jwt "github.com/Siar-Akbayin/jwt-go-auth"
-
+	"google.golang.org/grpc/metadata"
 
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/frontend/genproto"
 	"github.com/GoogleCloudPlatform/microservices-demo/src/frontend/money"
@@ -349,9 +349,9 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 	fmt.Println(err)
 	fmt.Println("HHHHHHHHHHHHHHHHHH")
 	fmt.Println(token)
-	
-	ctx := metadata.AppendToOutgoingContext(context.Background(), "authorization", token)
 
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "authorization", token)
+	start := time.Now()
 	tracking, err := pb.NewTrackingServiceClient(fe.trackSvcConn).
 		GetPersonaldata(ctx, &pb.TrackingRequest{
 			Phone: phone,
@@ -361,7 +361,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 				State:         state,
 				ZipCode:       int32(zipCode),
 				Country:       country},
-			Email: email,
+			Email:    email,
 			Lastname: lastname,
 			CreditCard: &pb.CreditCardInfo{
 				CreditCardNumber:          ccNumber,
@@ -370,7 +370,8 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 				CreditCardCvv:             int32(ccCVV)},
 			Birthdate: birthdate,
 		})
-
+	t := time.Now()
+	fmt.Println("ZEITMESSUNG: ", t.Sub(start))
 	fmt.Println("XXXXXXXXXXXXXXXX")
 	fmt.Println(tracking)
 	fmt.Println(err)
@@ -427,7 +428,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": deploymentDetailsMap,
 		"frontendMessage":   frontendMessage,
-		"tracking": tracking,
+		"tracking":          tracking,
 	}); err != nil {
 		log.Println(err)
 	}

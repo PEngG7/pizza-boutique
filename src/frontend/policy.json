@@ -4,11 +4,12 @@
       "service1": {
         "allowed":
         {
-          "address": "Address"
+          "address": "Address",
+          "creditCard": "CreditCardInfo"
         },
         "generalized":
         {
-          "phone": "string"
+          
         },
         "noised":
         {

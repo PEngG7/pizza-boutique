@@ -68,15 +68,12 @@
                     <div id="map"></div>
                     <script>
     
-                    console.log('test1');
                     var tracking_data = {{.}};
-                    console.log('test2');
                     var city = tracking_data.tracking.address.city;
                     var country = tracking_data.tracking.address.country;
                     var street = tracking_data.tracking.address.street_address;
                     var zip = tracking_data.tracking.address.zip_code;
                     var address = street + ', ' + zip + ', ' + city + ', ' + country;
-                    console.log(address)
 
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.open( "GET", 'https://geocode.search.hereapi.com/v1/geocode?q='+encodeURIComponent(address)+'&apiKey=JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow', false ); // false for synchronous request
@@ -85,7 +82,8 @@
                     tmp = JSON.parse(xmlHttp.responseText)
                     dest_addr = tmp.items[0].position.lat + ',' + tmp.items[0].position.lng 
 
-                    function calculateRouteFromAtoB(platform, destination, start ) {
+                    function calculateRouteFromAtoB(platform, destination, start, remove ) {
+                    if (typeof remove === 'undefined') { remove = false; }
                     var router = platform.getRoutingService(null, 8),
                         routeRequestParams = {
                             routingMode: 'fast',
@@ -132,7 +130,9 @@
                     window.addEventListener('resize', () => map.getViewPort().resize());
                     
                     var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-                    
+                    // if (remove === true){
+                    //     map.removeObject(routeLine)
+                    // }
                     var ui = H.ui.UI.createDefault(map, defaultLayers);
                 
                     function addRouteShapeToMap(route) {
@@ -203,18 +203,51 @@
                     function toMMSS(duration) {
                     return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
                     }
+
+                    function callUpdateMap() {
+                        var i = 0;
+                        const movements = ["52.5306,13.3826", "52.5290,13.3776", "52.5237,13.3579"]
+
+                        function updateMap(){
+                            setTimeout(function() {
+                                calculateRouteFromAtoB(platform, dest_addr, movements[i], true);
+                                i++;
+                                if (i < movements.length){
+                                    updateMap()
+                                }
+                            }, 15000)                            
+                        }
+
+                        updateMap();
+                    }
                     
-                    calculateRouteFromAtoB(platform, dest_addr, '52.5352,13.3780')
+                    calculateRouteFromAtoB(platform, dest_addr, '52.5352,13.3780', false)
+
                     </script>
 
                 <div class="col text-center">
-                    <script>
-                        setInterval(updateMap, 3000)
-                        function updateMap(){
-                            const movements = ["52.5372, 13.3744", "52.5399, 13.3704"]
-                        }
-                    </script>
-                    <button class="cymbal-button-primary" onclick="updateMap()" type="submit">
+                    <!-- <script>
+                       
+                        var tracking_data = {{.}};
+                    var city = tracking_data.tracking.address.city;
+                    var country = tracking_data.tracking.address.country;
+                    var street = tracking_data.tracking.address.street_address;
+                    var zip = tracking_data.tracking.address.zip_code;
+                    var address = street + ', ' + zip + ', ' + city + ', ' + country;
+
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open( "GET", 'https://geocode.search.hereapi.com/v1/geocode?q='+encodeURIComponent(address)+'&apiKey=JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow', false ); // false for synchronous request
+                    xmlHttp.send( null );
+
+                    tmp = JSON.parse(xmlHttp.responseText)
+                    dest_addr = tmp.items[0].position.lat + ',' + tmp.items[0].position.lng
+                        var platform = new H.service.Platform({
+                        apikey: 'JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow'
+                        });
+                        
+                        
+                    </script> -->
+                    <button class="cymbal-button-primary" onclick="callUpdateMap()" type="submit">
                         Update Map
                     </button>
                 </div>
