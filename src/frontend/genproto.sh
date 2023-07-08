@@ -19,6 +19,6 @@
 PATH=$PATH:$GOPATH/bin
 protodir=../../protos
 
-protoc --go_out=plugins=grpc:genproto -I $protodir $protodir/demo.proto
+protoc --go_out=. --go-grpc_out=. -I ../../protos ../../protos/demo.proto
 
 # [END gke_frontend_genproto]
