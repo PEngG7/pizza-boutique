@@ -268,20 +268,18 @@ service TrackingService {
 }
 
 message TrackingRequest {
-    string phone = 1;
-	Address address = 2;
+    string phoneNumber = 1;
+	string street = 2
 	string email = 3;
-	string lastname = 4;
-	CreditCardInfo creditCard = 5;
-	string birthdate = 6;
+	string name = 4;
+	int32 age = 5;
 }
 
 message TrackingResponse {
-    string phone = 1;
-	Address address = 2;
+    string phoneNumber = 1;
+	string street = 2
 	string email = 3;
-	string lastname = 4;
-	CreditCardInfo creditCard = 5;
-	string birthdate = 6;
+	string name = 4;
+	int32 age = 5;
 }
 
