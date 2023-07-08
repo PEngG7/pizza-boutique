@@ -370,8 +370,9 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 				CreditCardCvv:             int32(ccCVV)},
 			Birthdate: birthdate,
 		})
-	t := time.Now()
-	fmt.Println("ZEITMESSUNG: ", t.Sub(start))
+	duration := float64(time.Since(start).Microseconds())
+	interceptorDuration.Observe(duration)
+	fmt.Println("ZEITMESSUNG: ", duration)
 	fmt.Println("XXXXXXXXXXXXXXXX")
 	fmt.Println(tracking)
 	fmt.Println(err)

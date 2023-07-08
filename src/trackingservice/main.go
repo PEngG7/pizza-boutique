@@ -28,7 +28,7 @@ import (
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/grpc/status"
 
-	purposelimiter "github.com/louisloechel/jwt-go-purposelimiter"
+	purposelimiter "github.com/louisloechel/purpl"
 
 	// "github.com/golang-jwt/jwt"
 	// "google.golang.org/grpc/metadata"
@@ -92,11 +92,11 @@ func main() {
 	if os.Getenv("DISABLE_STATS") == "" {
 		log.Info("Stats enabled, but temporarily unavailable")
 		//srv = grpc.NewServer()
-		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor()))
+		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor("key.pem")))
 	} else {
 		log.Info("Stats disabled.")
 		//srv = grpc.NewServer()
-		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor()))
+		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor("key.pem")))
 	}
 	svc := &server{}
 	pb.RegisterTrackingServiceServer(srv, svc)

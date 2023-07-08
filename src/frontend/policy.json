@@ -2,55 +2,100 @@
   "services": [
     {
       "service1": {
-        "allowed":
-        {
-          "address": "Address",
-          "creditCard": "CreditCardInfo"
-        },
-        "generalized":
-        {
-          
-        },
-        "noised":
-        {
-          "birthdate": "string"
-        },
-        "reduced":
-        {
-          "email": "string"
-        }
-      },
-      "service2": {
-        "allowed":
-        {
-          "name": "string",
-          "street": "string",
-          "sex": "string"
-        },
-        "generalized":
-        {
-          "phoneNumber": "string"
-        },
-        "noised":
-        {
-          "age": "int"
-        },
-        "reduced":
-        {}
-      },
-      "service3": {
-        "allowed":
-        {
-          "street": "string",
-          "name": "string",
-          "age": "int",
-          "sex": "string",
-          "phoneNumber": "string"
+        "allowed": {
+          "name": [
+            "string"
+          ],
+          "sex": [
+            "string"
+          ],
+          "age": [
+            "int"
+          ],
+          "phoneNumber": [
+            "string"
+          ],
+          "street": [
+            "string"
+          ]
         },
         "generalized": {},
         "noised": {},
-        "reduced":
-        {}
+        "reduced": {
+          "email": [
+            "string",
+            "4"
+          ]
+        }
+      },
+      "service2": {
+        "allowed": {
+          "name": [
+            "string"
+          ],
+          "sex": [
+            "string"
+          ]
+        },
+        "generalized": {},
+        "noised": {
+          "age": [
+            "int",
+            "Laplace"
+          ]
+        },
+        "reduced": {
+          "phoneNumber": [
+            "string",
+            "5"
+          ],
+          "street": [
+            "string",
+            "3"
+          ]
+        }
+      },
+      "trackingService": {
+        "allowed": {
+          "name": [
+            "string"
+          ],
+          "phone": [
+            "string"
+          ],
+          "street_name": [
+            "string"
+          ],
+          "street_number": [
+            "int"
+          ], 
+          "city": [
+            "string"
+          ],
+          "country": [
+            "string"
+          ],
+          "zip_code": [
+            "int"
+          ]
+        },
+        "generalized": {
+          "credit_card_cvv": [
+            "int"
+          ] 
+        },
+        "noised": {
+          "age": [
+            "int",
+            "Laplace"
+          ]
+        },
+        "reduced": {
+          "email": [
+            "string",
+            "4"
+          ]
+        }
       }
     }
   ]

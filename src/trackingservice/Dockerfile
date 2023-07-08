@@ -31,6 +31,7 @@ RUN apk add --no-cache ca-certificates
 
 WORKDIR /src
 COPY --from=builder /go/bin/trackingservice /src/trackingservice
+COPY ./key.pem ./key.pem
 ENV APP_PORT=50052
 
 # Definition of this variable is used by 'skaffold debug' to identify a golang binary.
