@@ -329,23 +329,24 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 	log.Debug("placing order")
 	fmt.Printf("Request %v", r)
 	var (
-		email         = r.FormValue("email")
-		streetAddress = r.FormValue("street_address")
-		zipCode, _    = strconv.ParseInt(r.FormValue("zip_code"), 10, 32)
-		city          = r.FormValue("city")
-		state         = r.FormValue("state")
-		country       = r.FormValue("country")
-		ccNumber      = r.FormValue("credit_card_number")
-		ccMonth, _    = strconv.ParseInt(r.FormValue("credit_card_expiration_month"), 10, 32)
-		ccYear, _     = strconv.ParseInt(r.FormValue("credit_card_expiration_year"), 10, 32)
-		ccCVV, _      = strconv.ParseInt(r.FormValue("credit_card_cvv"), 10, 32)
-		phone         = r.FormValue("phone")
-		lastname      = r.FormValue("lastname")
-		birthdate     = r.FormValue("birthdate")
+		email           = r.FormValue("email")
+		streetAddress   = r.FormValue("street_name")
+		streetNumber, _ = strconv.ParseInt(r.FormValue("street_number"), 10, 32)
+		zipCode, _      = strconv.ParseInt(r.FormValue("zip_code"), 10, 32)
+		city            = r.FormValue("city")
+		state           = r.FormValue("state")
+		country         = r.FormValue("country")
+		ccNumber        = r.FormValue("credit_card_number")
+		ccMonth, _      = strconv.ParseInt(r.FormValue("credit_card_expiration_month"), 10, 32)
+		ccYear, _       = strconv.ParseInt(r.FormValue("credit_card_expiration_year"), 10, 32)
+		ccCVV, _        = strconv.ParseInt(r.FormValue("credit_card_cvv"), 10, 32)
+		phone           = r.FormValue("phone")
+		name            = r.FormValue("name")
+		age, _          = strconv.ParseInt(r.FormValue("age"), 10, 32)
 	)
 
 	fmt.Println("IIIIIIIIIIIIIIII")
-	token, err := jwt.GenerateToken("policy.json", "service1", "key.pem")
+	token, err := jwt.GenerateToken("policy.json", "trackingService", "key.pem")
 	fmt.Println(err)
 	fmt.Println("HHHHHHHHHHHHHHHHHH")
 	fmt.Println(token)
@@ -354,23 +355,21 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 	start := time.Now()
 	tracking, err := pb.NewTrackingServiceClient(fe.trackSvcConn).
 		GetPersonaldata(ctx, &pb.TrackingRequest{
-			Phone: phone,
-			Address: &pb.Address{
-				StreetAddress: streetAddress,
-				City:          city,
-				State:         state,
-				ZipCode:       int32(zipCode),
-				Country:       country},
-			Email:    email,
-			Lastname: lastname,
-			CreditCard: &pb.CreditCardInfo{
-				CreditCardNumber:          ccNumber,
-				CreditCardExpirationMonth: int32(ccMonth),
-				CreditCardExpirationYear:  int32(ccYear),
-				CreditCardCvv:             int32(ccCVV)},
-			Birthdate: birthdate,
+			Phone:                     phone,
+			StreetName:                streetAddress,
+			StreetNumber:              int32(streetNumber),
+			City:                      city,
+			ZipCode:                   int32(zipCode),
+			Country:                   country,
+			Email:                     email,
+			Name:                      name,
+			Age:                       int32(age),
+			CreditCardNumber:          ccNumber,
+			CreditCardExpirationMonth: int32(ccMonth),
+			CreditCardExpirationYear:  int32(ccYear),
+			CreditCardCvv:             int32(ccCVV),
 		})
-	duration := float64(time.Since(start).Microseconds())
+	duration := float64(time.Since(start).Milliseconds())
 	interceptorDuration.Observe(duration)
 	fmt.Println("ZEITMESSUNG: ", duration)
 	fmt.Println("XXXXXXXXXXXXXXXX")
@@ -394,10 +393,13 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 				ZipCode:       int32(zipCode),
 				Country:       country},
 		})
+	fmt.Println(order)
+	fmt.Println(err)
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
 		return
 	}
+
 	log.WithField("order", order.GetOrder().GetOrderId()).Info("order placed")
 
 	order.GetOrder().GetItems()

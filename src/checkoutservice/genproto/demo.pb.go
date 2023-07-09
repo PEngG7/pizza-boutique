@@ -1313,9 +1313,6 @@ type PlaceOrderRequest struct {
 	Address              *Address        `protobuf:"bytes,3,opt,name=address,proto3" json:"address,omitempty"`
 	Email                string          `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
 	CreditCard           *CreditCardInfo `protobuf:"bytes,6,opt,name=credit_card,json=creditCard,proto3" json:"credit_card,omitempty"`
-	Phone                string          `protobuf:"bytes,7,opt,name=phone,proto3" json:"phone,omitempty"`
-	Birthdate            string          `protobuf:"bytes,8,opt,name=birthdate,proto3" json:"birthdate,omitempty"`
-	Lastname             string          `protobuf:"bytes,9,opt,name=lastname,proto3" json:"lastname,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -1379,27 +1376,6 @@ func (m *PlaceOrderRequest) GetCreditCard() *CreditCardInfo {
 		return m.CreditCard
 	}
 	return nil
-}
-
-func (m *PlaceOrderRequest) GetPhone() string {
-	if m != nil {
-		return m.Phone
-	}
-	return ""
-}
-
-func (m *PlaceOrderRequest) GetBirthdate() string {
-	if m != nil {
-		return m.Birthdate
-	}
-	return ""
-}
-
-func (m *PlaceOrderRequest) GetLastname() string {
-	if m != nil {
-		return m.Lastname
-	}
-	return ""
 }
 
 type PlaceOrderResponse struct {

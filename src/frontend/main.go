@@ -173,7 +173,7 @@ func main() {
 
 	http.Handle("/metrics", promhttp.Handler())
 	go func() {
-		err := http.ListenAndServe(":2112", nil)
+		err := http.ListenAndServe(":21112", nil)
 		if err != nil {
 
 			log.Error(err)

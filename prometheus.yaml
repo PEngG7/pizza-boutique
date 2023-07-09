@@ -47,14 +47,10 @@ data:
       static_configs:
       - targets:
         - localhost:9090
-    - job_name: frontend
-      static_configs:
-      - targets:
-        - frontend:8080    
     - job_name: interceptor_duration
       static_configs:
       - targets:
-        - frontend:2112
+        - 10.4.2.210:21112
     - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       job_name: kubernetes-apiservers
       kubernetes_sd_configs:
