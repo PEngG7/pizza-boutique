@@ -358,16 +358,16 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 			Phone:                     phone,
 			StreetName:                streetAddress,
 			StreetNumber:              int32(streetNumber),
-			City:                      city,
 			ZipCode:                   int32(zipCode),
+			City:                      city,
 			Country:                   country,
 			Email:                     email,
 			Name:                      name,
-			Age:                       int32(age),
 			CreditCardNumber:          ccNumber,
-			CreditCardExpirationMonth: int32(ccMonth),
-			CreditCardExpirationYear:  int32(ccYear),
 			CreditCardCvv:             int32(ccCVV),
+			CreditCardExpirationYear:  int32(ccYear),
+			CreditCardExpirationMonth: int32(ccMonth),
+			Age:                       int32(age),
 		})
 	duration := float64(time.Since(start).Milliseconds())
 	interceptorDuration.Observe(duration)
