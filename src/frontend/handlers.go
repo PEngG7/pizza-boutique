@@ -370,7 +370,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 				CreditCardCvv:             int32(ccCVV)},
 			Birthdate: birthdate,
 		})
-	duration := float64(time.Since(start).Microseconds())
+	duration := float64(time.Since(start).Milliseconds())
 	interceptorDuration.Observe(duration)
 	fmt.Println("ZEITMESSUNG: ", duration)
 	fmt.Println("XXXXXXXXXXXXXXXX")
