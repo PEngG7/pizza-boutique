@@ -1,102 +1,109 @@
 {
-  "services": [
-    {
-      "service1": {
-        "allowed": {
-          "name": [
-            "string"
-          ],
-          "sex": [
-            "string"
-          ],
-          "age": [
-            "int"
-          ],
-          "phoneNumber": [
-            "string"
-          ],
-          "street": [
-            "string"
-          ]
+  "services": {
+    "trackingService-maximal": {
+      "purpose1": {
+        "allowed": {},
+        "generalized": {
+          "credit_card_cvv": ["int", "3"],
+          "zip_code": ["int", "8"],
+          "city": ["string", "2"],
+          "credit_card_expiration_year": ["int", "10"],
+          "credit_card_number": ["string", "5"]
         },
+        "noised": {
+          "age": ["int", "Laplace"],
+          "street_number": ["int", "Laplace"],
+          "street_name": ["string", "Laplace"],
+          "credit_card_expiration_month": ["int", "Laplace"]
+        },
+        "reduced": {
+          "email": ["string", "4"],
+          "country": ["string", "3"],
+          "name": ["string", "4"],
+          "phone": ["string", "3"]
+        }
+      },
+      "purpose2": {
+        "allowed": {},
+        "generalized": {
+          "credit_card_cvv": ["int", "3"],
+          "zip_code": ["int", "8"],
+          "city": ["string", "2"],
+          "credit_card_expiration_year": ["int", "10"],
+          "credit_card_number": ["string", "5"]
+        },
+        "noised": {},
+        "reduced": {
+          "email": ["string", "4"],
+          "country": ["string", "3"],
+          "name": ["string", "4"],
+          "phone": ["string", "3"]
+        }
+      },
+      "purpose3": {
+        "allowed": {},
         "generalized": {},
         "noised": {},
         "reduced": {
-          "email": [
-            "string",
-            "4"
-          ]
+          "email": ["string", "4"],
+          "country": ["string", "3"],
+          "name": ["string", "4"],
+          "phone": ["string", "3"]
         }
-      },
-      "service2": {
+      }
+    },
+    "trackingService-minimal": {
+      "delivery-tracking": {
         "allowed": {
-          "name": [
-            "string"
-          ],
-          "sex": [
-            "string"
-          ]
-        },
-        "generalized": {},
-        "noised": {
-          "age": [
-            "int",
-            "Laplace"
-          ]
-        },
-        "reduced": {
-          "phoneNumber": [
-            "string",
-            "5"
-          ],
-          "street": [
-            "string",
-            "3"
-          ]
-        }
-      },
-      "trackingService": {
-        "allowed": {
-          "name": [
-            "string"
-          ],
-          "phone": [
-            "string"
-          ],
-          "street_name": [
-            "string"
-          ],
-          "street_number": [
-            "int"
-          ], 
-          "city": [
-            "string"
-          ],
-          "country": [
-            "string"
-          ],
-          "zip_code": [
-            "int"
-          ]
+          "name": ["string"],
+          "phone": ["string"],
+          "country": ["string"],
+          "zip_code": ["string"],
+          "city": ["string"],
+          "street_number": ["string"],
+          "street_name": ["string"]
         },
         "generalized": {
-          "credit_card_cvv": [
-            "int"
-          ] 
+          "credit_card_cvv": ["int", "3"],
+          "credit_card_expiration_year": ["int", "10"],
+          "credit_card_number": ["string", "5"]
         },
         "noised": {
-          "age": [
-            "int",
-            "Laplace"
-          ]
+          "age": ["int", "Laplace"],
+          "credit_card_expiration_month": ["int", "Laplace"]
         },
         "reduced": {
-          "email": [
-            "string",
-            "4"
-          ]
+          "email": ["string", "4"]
+        }
+      },
+      "purpose2": {
+        "allowed": {},
+        "generalized": {
+          "credit_card_cvv": ["int", "3"],
+          "zip_code": ["int", "8"],
+          "city": ["string", "2"],
+          "credit_card_expiration_year": ["int", "10"],
+          "credit_card_number": ["string", "5"]
+        },
+        "noised": {},
+        "reduced": {
+          "email": ["string", "4"],
+          "country": ["string", "3"],
+          "name": ["string", "4"],
+          "phone": ["string", "3"]
+        }
+      },
+      "purpose3": {
+        "allowed": {},
+        "generalized": {},
+        "noised": {},
+        "reduced": {
+          "email": ["string", "4"],
+          "country": ["string", "3"],
+          "name": ["string", "4"],
+          "phone": ["string", "3"]
         }
       }
     }
-  ]
+  }
 }

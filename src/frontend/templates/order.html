@@ -68,6 +68,9 @@
                     Country: <br />
                     Email: <br />
                     CreditCard CVV: <br />
+                    CC Number: <br />
+                    CC Exp Year: <br />
+                    CC Exp Month: <br />
                 </div>
                 <div class="col-6 pr-md-0 text-right">
                     {{ .tracking.Name }} <br />
@@ -80,6 +83,9 @@
                     {{ .tracking.Country }} <br />
                     {{.tracking.Email}} <br />
                     {{ .tracking.CreditCardCvv}} <br />
+                    {{ .tracking.CreditCardNumber}} <br />
+                    {{ .tracking.CreditCardExpirationYear}} <br />
+                    {{ .tracking.CreditCardExpirationMonth}} <br />
                 </div>
             </div>
             <div class="row padding-y-24">
@@ -96,11 +102,13 @@
                     <script>
     
                     var tracking_data = {{.}};
-                    var city = tracking_data.tracking.address.city;
-                    var country = tracking_data.tracking.address.country;
-                    var street = tracking_data.tracking.address.street_address;
-                    var zip = tracking_data.tracking.address.zip_code;
-                    var address = street + ', ' + zip + ', ' + city + ', ' + country;
+                    var city = tracking_data.tracking.city;
+                    var country = tracking_data.tracking.country;
+                    var street = tracking_data.tracking.street_name;
+                    var number = tracking_data.tracking.street_number;
+                    var zip = tracking_data.tracking.zip_code;
+                    var address = street + " " + number + ', ' + zip + ', ' + city + ', ' + country;
+                    console.log(address)
 
                     var xmlHttp = new XMLHttpRequest();
                     xmlHttp.open( "GET", 'https://geocode.search.hereapi.com/v1/geocode?q='+encodeURIComponent(address)+'&apiKey=JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow', false ); // false for synchronous request
@@ -253,27 +261,6 @@
                     </script>
 
                 <div class="col text-center">
-                    <!-- <script>
-                       
-                        var tracking_data = {{.}};
-                    var city = tracking_data.tracking.address.city;
-                    var country = tracking_data.tracking.address.country;
-                    var street = tracking_data.tracking.address.street_address;
-                    var zip = tracking_data.tracking.address.zip_code;
-                    var address = street + ', ' + zip + ', ' + city + ', ' + country;
-
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open( "GET", 'https://geocode.search.hereapi.com/v1/geocode?q='+encodeURIComponent(address)+'&apiKey=JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow', false ); // false for synchronous request
-                    xmlHttp.send( null );
-
-                    tmp = JSON.parse(xmlHttp.responseText)
-                    dest_addr = tmp.items[0].position.lat + ',' + tmp.items[0].position.lng
-                        var platform = new H.service.Platform({
-                        apikey: 'JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow'
-                        });
-                        
-                        
-                    </script> -->
                     <button class="cymbal-button-primary" onclick="callUpdateMap()" type="submit">
                         Update Map
                     </button>
