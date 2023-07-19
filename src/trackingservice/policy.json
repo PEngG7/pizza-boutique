@@ -76,33 +76,33 @@
           "email": ["string", "4"]
         }
       },
-      "all-allowed": {
-        "allowed": {
-          "name": ["string"],
-          "phone": ["string"],
-          "country": ["string"],
-          "zip_code": ["string"],
-          "city": ["string"],
-          "street_number": ["string"],
-          "street_name": ["string"],
-          "credit_card_cvv": ["int"],
-          "credit_card_expiration_year": ["int"],
-          "credit_card_number": ["string"],
-          "credit_card_expiration_month": ["int"],
-          "email": ["string"],
-          "age": ["string"]
-        },
+      "purpose2": {
+        "allowed": {},
         "generalized": {
+          "credit_card_cvv": ["int", "3"],
+          "zip_code": ["int", "8"],
+          "city": ["string", "2"],
+          "credit_card_expiration_year": ["int", "10"],
+          "credit_card_number": ["string", "5"]
         },
         "noised": {},
         "reduced": {
+          "email": ["string", "4"],
+          "country": ["string", "3"],
+          "name": ["string", "4"],
+          "phone": ["string", "3"]
         }
       },
-      "all-denied": {
+      "purpose3": {
         "allowed": {},
         "generalized": {},
         "noised": {},
-        "reduced": {}
+        "reduced": {
+          "email": ["string", "4"],
+          "country": ["string", "3"],
+          "name": ["string", "4"],
+          "phone": ["string", "3"]
+        }
       }
     }
   }

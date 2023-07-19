@@ -69,8 +69,8 @@ github.com/googleapis/gax-go/v2 v2.7.1/go.mod h1:4orTrqY6hXxxaUL4LHIPl6lGo8vAE38
 github.com/grd/stat v0.0.0-20130623202159-138af3fd5012 h1:TVY1GBBIAAph4RWO9Y3p1wU+7n6khY1jxPKjDphzznA=
 github.com/grd/stat v0.0.0-20130623202159-138af3fd5012/go.mod h1:hHyH5N67TF4tD4PBbqMlyuIu5Lq5QwKSgNyyG31trzY=
 github.com/jung-kurt/gofpdf v1.0.3-0.20190309125859-24315acbbda5/go.mod h1:7Id9E/uU8ce6rXgefFLlgrJj/GYY22cpxn+r32jIOes=
-github.com/louisloechel/purpl v0.1.1 h1:rq8HYcapWRHLA6SDBMVj7lk+n4Ch51ocvL2EMNIgvW4=
-github.com/louisloechel/purpl v0.1.1/go.mod h1:u3VQL3d5DSdv4gPt7WQrYKAViu/VmwuEGMaE9dPAxlo=
+github.com/louisloechel/purpl v0.1.2 h1:ltRsx+G/ll8HXgJJhScuOV1/nVw0wFMuo4Ofp0inqBk=
+github.com/louisloechel/purpl v0.1.2/go.mod h1:u3VQL3d5DSdv4gPt7WQrYKAViu/VmwuEGMaE9dPAxlo=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=

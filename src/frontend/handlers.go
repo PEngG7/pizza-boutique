@@ -346,7 +346,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 	)
 
 	fmt.Println("IIIIIIIIIIIIIIII")
-	token, err := jwt.GenerateToken("policy.json", "trackingService-minimal", "delivery-tracking", "key.pem", 2)
+	token, err := jwt.GenerateToken("policy.json", "trackingService-minimal", "purpose2", "key.pem", 5)
 	fmt.Println(err)
 	fmt.Println("HHHHHHHHHHHHHHHHHH")
 	fmt.Println(token)
@@ -369,7 +369,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 			CreditCardExpirationMonth: int32(ccMonth),
 			Age:                       int32(age),
 		})
-	duration := float64(time.Since(start).Milliseconds())
+	duration := float64(time.Since(start).Microseconds())
 	interceptorDuration.Observe(duration)
 	fmt.Println("ZEITMESSUNG: ", duration)
 	fmt.Println("XXXXXXXXXXXXXXXX")

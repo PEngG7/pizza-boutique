@@ -6,6 +6,19 @@ from grpc_interceptor import ClientInterceptor
 import demo_pb2
 import demo_pb2_grpc
 from typing import Any, Callable
+import time
+from prometheus_client import Summary, start_http_server, Counter, Histogram
+
+REQUEST_DURATION = Summary('request_processing_seconds', 'Time spent processing request')
+requests_sent = Counter('grpc_requests_sent', 'Amount of sent requests')
+REQUESTS_SUCCESS = Counter('requests_success_total', 'Number of successful requests')
+REQUESTS_FAILURE = Counter('requests_failure_total', 'Number of failed requests')
+histogram = Histogram('grpc_request_milliseconds_histrogram', 'Time spent processing grpc request')
+INTERCEPTOR_DURATION = Summary('grpc_request_milliseconds_summary', 'Time spent processing grpc request')
+
+
+start_http_server(22222)  # Replace 9090 with the desired port number for the Prometheus client to listen on
+
 
 class LocustInterceptor(ClientInterceptor):
     def __init__(self, environment, *args, **kwargs):
@@ -57,11 +70,14 @@ class GrpcUsers(User):
         self.stub = self.stub_class(self._channel)
 
 class GrpcUser(TaskSet):
+    @REQUEST_DURATION.time()
     @task
     def grpc_request(self):
         channel = grpc.insecure_channel("trackingservice:50052")
         self.stub = demo_pb2_grpc.TrackingServiceStub(channel)
-        token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwb2xpY3kiOnsiYWxsb3dlZCI6eyJjaXR5IjpbInN0cmluZyJdLCJjb3VudHJ5IjpbInN0cmluZyJdLCJuYW1lIjpbInN0cmluZyJdLCJwaG9uZSI6WyJzdHJpbmciXSwic3RyZWV0X25hbWUiOlsic3RyaW5nIl0sInN0cmVldF9udW1iZXIiOlsic3RyaW5nIl0sInppcF9jb2RlIjpbInN0cmluZyJdfSwiZ2VuZXJhbGl6ZWQiOnsiY3JlZGl0X2NhcmRfY3Z2IjpbImludCIsIjMiXSwiY3JlZGl0X2NhcmRfZXhwaXJhdGlvbl95ZWFyIjpbImludCIsIjEwIl0sImNyZWRpdF9jYXJkX251bWJlciI6WyJzdHJpbmciLCI1Il19LCJub2lzZWQiOnsiYWdlIjpbImludCIsIkxhcGxhY2UiXSwiY3JlZGl0X2NhcmRfZXhwaXJhdGlvbl9tb250aCI6WyJpbnQiLCJMYXBsYWNlIl19LCJyZWR1Y2VkIjp7ImVtYWlsIjpbInN0cmluZyIsIjQiXX19LCJpc3MiOiJ0b2tlbkdlbmVyYXRvciIsImV4cCI6MTY4OTcwMTUzNn0.MXWdWqEIkCrM5QSbsAyIzT-lt6cX9KqPpWv8x_MaMMg8k6x7D8siQaMK2jp-cnVCBTkRFo_94euwnz1T5oI4Q4H5-ueiVxqWvzpGFa4mfCMmwf-xR1P9Xvfo04YO7QTfNrFStKCiukLKd5MT2R_nmsF-34auE3_-slLwvZz2lfRF7go6hqtih7YVOTIHNYHd82NPc-haqsqI8A_mjR6sGmNDuPsnXLq5NvIwBmLq5U6C3LVJxpgc63Y5ma7ACOXRSj4O3JqRN3xUpXyb5l38W2tRn4_FUtExvSLLxldzshuT1f4vRC6N0TT-M1RiPlyv60lshS7oYIm7Lt0mSa-4SQ'
+        token = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJwb2xpY3kiOnsiYWxsb3dlZCI6eyJjaXR5IjpbInN0cmluZyJdLCJjb3VudHJ5IjpbInN0cmluZyJdLCJjcmVkaXRfY2FyZF9jdnYiOlsiaW50Il0sImNyZWRpdF9jYXJkX2V4cGlyYXRpb25fbW9udGgiOlsiaW50Il0sImNyZWRpdF9jYXJkX2V4cGlyYXRpb25feWVhciI6WyJpbnQiXSwiY3JlZGl0X2NhcmRfbnVtYmVyIjpbInN0cmluZyJdLCJlbWFpbCI6WyJzdHJpbmciXSwibmFtZSI6WyJzdHJpbmciXSwicGhvbmUiOlsic3RyaW5nIl0sInN0cmVldF9uYW1lIjpbInN0cmluZyJdLCJzdHJlZXRfbnVtYmVyIjpbInN0cmluZyJdLCJ6aXBfY29kZSI6WyJzdHJpbmciXX0sImdlbmVyYWxpemVkIjp7fSwibm9pc2VkIjp7fSwicmVkdWNlZCI6e319LCJpc3MiOiJ0b2tlbkdlbmVyYXRvciIsImV4cCI6MTY4OTc4MjEwNn0.iFeRm5bxjcsWpyPt2Y2N-ZgqIublK9Ntk742krZYjeH1i_gugAf7YkOB6lKnUkKAUATJiFXbhn99WevDc9huqzI93b3YiIbLNwdijOv3KNg-xI75njr-_abJngeME6wHG9ZJPbbQaU2zAia1ASTn2cfzrGuGUrreMhzZ_fmugk9wYPYH6mFSc9Ir88jdSQgRPTvCcdDsgUq4EDt_XsrS0dbYPHVGP8XerRt47ypR0nxPZuj4XWflPs_PaecvW3HJTrCTLTkcJRYxrm0aKeblb0HMlfoRZXyp6CUoEX4qINf3TGNvbxYDA7TPlJkWj7R7QDyz2sLVF505fRFb4r998Q'
+        metadata = [('authorization', token)]
+        start = round(time.time() * 1000.0)
         request_msg = demo_pb2.TrackingRequest(
             phone='030/1234567',
             street_name='Marchstr',
@@ -73,11 +89,17 @@ class GrpcUser(TaskSet):
             name='Mustermann',
             age=25
         )
-
-        metadata = [('authorization', token)]
-
+        requests_sent.inc()
         response = self.stub.GetPersonaldata(request_msg, metadata=metadata)
-        print(response)
+        if response is not None:
+            REQUESTS_SUCCESS.inc()
+        else: 
+            REQUESTS_FAILURE.inc()
+        end = round(time.time() * 1000.0)
+        duration = end - start
+        INTERCEPTOR_DURATION.observe(duration)
+        histogram.observe(duration)
+        print(duration)
 
 class GrpcUser(GrpcUsers):
     stub_class = demo_pb2_grpc.TrackingServiceStub

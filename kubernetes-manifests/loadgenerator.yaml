@@ -80,3 +80,17 @@ spec:
           limits:
             cpu: 500m
             memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loadgenerator
+spec:
+  selector:
+    app: loadgenerator  # This should match the selector of your Locust deployment
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9090  # Expose the Prometheus client on port 9090
+      targetPort: 22222
+  type: NodePort  # Use NodePort or LoadBalancer based on your cluster configuration

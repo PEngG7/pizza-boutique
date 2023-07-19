@@ -50,7 +50,11 @@ data:
     - job_name: interceptor_duration
       static_configs:
       - targets:
-        - 10.4.2.210:21112
+        - 10.8.15.117:21112
+    - job_name: 'locust'
+      static_configs:
+        - targets:
+          - 10.8.12.7:9090  # Use the IP/hostname of the machine running Locust with the exposed port
     - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
       job_name: kubernetes-apiservers
       kubernetes_sd_configs:
