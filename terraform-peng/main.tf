@@ -87,3 +87,13 @@ resource "null_resource" "istio_addons" {
   ]
 }
 
+resource "null_resource" "apply-pizza-boutique" {
+  provisioner "local-exec" {
+    interpreter = ["bash", "-exc"]
+    command = "kubectl apply -f ../release/kubernetes-manifests.yaml"
+  }
+  depends_on = [
+    module.gcloud, null_resource.install_istio
+  ]
+}
+
