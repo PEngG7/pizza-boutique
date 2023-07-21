@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	cloud.google.com/go/profiler v0.3.1
-	github.com/louisloechel/purpl v0.1.2
+	github.com/PEngG7/naive-approach v0.1.2
 	github.com/sirupsen/logrus v1.9.3
 	golang.org/x/net v0.10.0
 	google.golang.org/grpc v1.56.2
@@ -16,7 +16,8 @@ require (
 	cloud.google.com/go v0.110.0 // indirect
 	cloud.google.com/go/compute v1.19.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
+	github.com/Siar-Akbayin/jwt-go-auth v0.1.3 // indirect
+	github.com/golang-jwt/jwt/v5 v5.0.0 // indirect
 	github.com/golang/glog v1.1.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect

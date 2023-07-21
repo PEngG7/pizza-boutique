@@ -92,16 +92,30 @@ func main() {
 	var srv *grpc.Server
 	if os.Getenv("DISABLE_STATS") == "" {
 		log.Info("Stats enabled, but temporarily unavailable")
+		// Baseline - No Interceptor at all
 		//srv = grpc.NewServer()
+
+		// No-Op Interceptor
 		//srv = grpc.NewServer(grpc.UnaryInterceptor(UnaryServerInterceptor()))
+
+		// Our purposelimiter interceptor
 		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor("key.pem")))
-		//srv = grpc.NewServer(grpc.UnaryInterceptor(naive.UnaryServerInterceptor("policy.json", "trackingService-minimal", "delivery-tracking", "key_p.pem")))
+
+		// naive monolithic approach
+		//srv = grpc.NewServer(grpc.UnaryInterceptor(naive.UnaryServerInterceptor("policy.json", "trackingService-maximal", "purpose1", "key_private.pem", "public.pem")))
 	} else {
 		log.Info("Stats disabled.")
+		// Baseline - No Interceptor at all
 		//srv = grpc.NewServer()
-		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor("key.pem")))
+
+		// No-Op Interceptor
 		//srv = grpc.NewServer(grpc.UnaryInterceptor(UnaryServerInterceptor()))
-		//srv = grpc.NewServer(grpc.UnaryInterceptor(naive.UnaryServerInterceptor("policy.json", "trackingService-minimal", "delivery-tracking", "key_p.pem")))
+
+		// Our purposelimiter interceptor
+		srv = grpc.NewServer(grpc.UnaryInterceptor(purposelimiter.UnaryServerInterceptor("key.pem")))
+
+		// naive monolithic approach
+		//srv = grpc.NewServer(grpc.UnaryInterceptor(naive.UnaryServerInterceptor("policy.json", "trackingService-maximal", "purpose1", "key_private.pem", "public.pem")))
 	}
 	svc := &server{}
 	pb.RegisterTrackingServiceServer(srv, svc)
@@ -132,20 +146,6 @@ func (s *server) GetPersonaldata(ctx context.Context, in *pb.TrackingRequest) (*
 	defer log.Info("[GetPersonaldata] completed request")
 
 	return &pb.TrackingResponse{
-		// Pd: &pb.PersonalData{
-		// 	Phone: in.Phone,
-		// 	Address: in.Address,
-		// 	Email: in.Email,
-		// 	Lastname: in.Lastname,
-		// 	CreditCard: in.CreditCard,
-		// 	Birthdate: in.Birthdate,
-		// },
-		// Phone:      in.Phone,
-		// Address:    in.Address,
-		// Email:      in.Email,
-		// Lastname:   in.Lastname,
-		// CreditCard: in.CreditCard,
-		// Birthdate:  in.Birthdate,
 		Phone:                     in.Phone,
 		StreetName:                in.StreetName,
 		StreetNumber:              in.StreetNumber,
@@ -159,6 +159,45 @@ func (s *server) GetPersonaldata(ctx context.Context, in *pb.TrackingRequest) (*
 		CreditCardExpirationYear:  in.CreditCardExpirationYear,
 		CreditCardExpirationMonth: in.CreditCardExpirationMonth,
 		Age:                       in.Age,
+		// Phone2:                     in.Phone2,
+		// StreetName2:                in.StreetName2,
+		// StreetNumber2:              in.StreetNumber2,
+		// ZipCode2:                   in.ZipCode2,
+		// City2:                      in.City2,
+		// Country2:                   in.Country2,
+		// Email2:                     in.Email2,
+		// Name2:                      in.Name2,
+		// CreditCardNumber2:          in.CreditCardNumber2,
+		// CreditCardCvv2:             in.CreditCardCvv2,
+		// CreditCardExpirationYear2:  in.CreditCardExpirationYear2,
+		// CreditCardExpirationMonth2: in.CreditCardExpirationMonth2,
+		// Age2:                       in.Age2,
+		// Phone3:                     in.Phone3,
+		// StreetName3:                in.StreetName3,
+		// StreetNumber3:              in.StreetNumber3,
+		// ZipCode3:                   in.ZipCode3,
+		// City3:                      in.City3,
+		// Country3:                   in.Country3,
+		// Email3:                     in.Email3,
+		// Name3:                      in.Name3,
+		// CreditCardNumber3:          in.CreditCardNumber3,
+		// CreditCardCvv3:             in.CreditCardCvv3,
+		// CreditCardExpirationYear3:  in.CreditCardExpirationYear3,
+		// CreditCardExpirationMonth3: in.CreditCardExpirationMonth3,
+		// Age3:                       in.Age3,
+		// Phone4:                     in.Phone4,
+		// StreetName4:                in.StreetName4,
+		// StreetNumber4:              in.StreetNumber4,
+		// ZipCode4:                   in.ZipCode4,
+		// City4:                      in.City4,
+		// Country4:                   in.Country4,
+		// Email4:                     in.Email4,
+		// Name4:                      in.Name4,
+		// CreditCardNumber4:          in.CreditCardNumber4,
+		// CreditCardCvv4:             in.CreditCardCvv,
+		// CreditCardExpirationYear4:  in.CreditCardExpirationYear4,
+		// CreditCardExpirationMonth4: in.CreditCardExpirationMonth4,
+		// Age4:                       in.Age4,
 	}, nil
 }
 
