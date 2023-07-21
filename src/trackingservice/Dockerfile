@@ -34,7 +34,7 @@ COPY --from=builder /go/bin/trackingservice /src/trackingservice
 COPY ./public.pem ./public.pem
 COPY ./key.pem ./key.pem
 COPY ./policy.json ./policy.json
-COPY ./key_private.pem ./kep_private.pem
+COPY ./key_private.pem ./key_private.pem
 ENV APP_PORT=50052
 
 # Definition of this variable is used by 'skaffold debug' to identify a golang binary.
