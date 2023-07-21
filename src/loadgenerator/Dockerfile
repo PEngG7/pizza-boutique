@@ -12,8 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#FROM python:3.11.1-slim@sha256:1591aa8c01b5b37ab31dbe5662c5bdcf40c2f1bce4ef1c1fd24802dae3d01052 as base
-FROM arm64v8/python:3.11.1-slim as base
+FROM python:3.11.1-slim@sha256:1591aa8c01b5b37ab31dbe5662c5bdcf40c2f1bce4ef1c1fd24802dae3d01052 as base
 
 FROM base as builder
 
@@ -28,6 +27,12 @@ WORKDIR /loadgen
 COPY --from=builder /install /usr/local
 
 # Add application code.
+COPY demo_pb2_grpc.py .
+COPY demo_pb2.py .
+COPY demo2_pb2_grpc.py .
+COPY demo2_pb2.py .
+COPY demo3_pb2_grpc.py .
+COPY demo3_pb2.py .
 COPY locustfile.py .
 
 # enable gevent support in debugger

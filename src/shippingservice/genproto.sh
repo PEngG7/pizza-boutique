@@ -16,9 +16,9 @@
 
 # [START gke_shippingservice_genproto]
 
-PATH=$PATH:$GOPATH/bin
+PATH=$PATH:/home/hyang/go/bin
 protodir=../../protos
 
-protoc --go_out=plugins=grpc:genproto -I $protodir $protodir/demo.proto
+protoc --go-grpc_out=genproto -I $protodir $protodir/demo.proto 
 
 # [END gke_shippingservice_genproto]

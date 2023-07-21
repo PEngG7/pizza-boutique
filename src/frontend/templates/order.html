@@ -14,6 +14,7 @@
  limitations under the License.
 -->
 
+
 {{ define "order" }}
 
     {{ template "header" . }}
@@ -25,12 +26,12 @@
     </div>
 
     <main role="main" class="order">
-
         <section class="container order-complete-section">
             <div class="row">
                 <div class="col-12 text-center">
                     <h3>
                         Your order is complete!
+                        {{.test}}
                     </h3>
                 </div>
                 <div class="col-12 text-center">
@@ -53,12 +54,211 @@
                     {{.order.ShippingTrackingId}}
                 </div>
             </div>
+            <div class="row border-bottom-solid padding-y-24">
+                <div class="text-center"> Your personal information as seen by the delivery person</div>
+                <div class="col-6 pl-md-0">
+                    Name: <br />
+                    Age: <br />
+                    Phone: <br />
+                    Street Name: <br />
+                    House Number: <br />
+                    Zip Code: <br />
+                    City: <br />
+                    Country: <br />
+                    Email: <br />
+                    CreditCard CVV: <br />
+                    CC Number: <br />
+                    CC Exp Year: <br />
+                    CC Exp Month: <br />
+                </div>
+                <div class="col-6 pr-md-0 text-right">
+                    {{ .tracking.Name }} <br />
+                    {{ .tracking.Age }} <br />
+                    {{ .tracking.Phone }} <br />
+                    {{ .tracking.StreetName }} <br />
+                    {{ .tracking.StreetNumber }} <br />
+                    {{ .tracking.ZipCode }} <br />
+                    {{ .tracking.City }} <br />
+                    {{ .tracking.Country }} <br />
+                    {{.tracking.Email}} <br />
+                    {{ .tracking.CreditCardCvv}} <br />
+                    {{ .tracking.CreditCardNumber}} <br />
+                    {{ .tracking.CreditCardExpirationYear}} <br />
+                    {{ .tracking.CreditCardExpirationMonth}} <br />
+                </div>
+            </div>
             <div class="row padding-y-24">
                 <div class="col-6 pl-md-0">
                     Total Paid
                 </div>
                 <div class="col-6 pr-md-0 text-right">
                     {{renderMoney .total_paid}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div id="map"></div>
+                    <script>
+    
+                    var tracking_data = {{.}};
+                    var city = tracking_data.tracking.city;
+                    var country = tracking_data.tracking.country;
+                    var street = tracking_data.tracking.street_name;
+                    var number = tracking_data.tracking.street_number;
+                    var zip = tracking_data.tracking.zip_code;
+                    var address = street + " " + number + ', ' + zip + ', ' + city + ', ' + country;
+                    console.log(address)
+
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open( "GET", 'https://geocode.search.hereapi.com/v1/geocode?q='+encodeURIComponent(address)+'&apiKey=JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow', false ); // false for synchronous request
+                    xmlHttp.send( null );
+
+                    tmp = JSON.parse(xmlHttp.responseText)
+                    dest_addr = tmp.items[0].position.lat + ',' + tmp.items[0].position.lng 
+
+                    function calculateRouteFromAtoB(platform, destination, start, remove ) {
+                    if (typeof remove === 'undefined') { remove = false; }
+                    var router = platform.getRoutingService(null, 8),
+                        routeRequestParams = {
+                            routingMode: 'fast',
+                            transportMode: 'car',
+                            origin: start, 
+                            destination: destination, 
+                            return: 'polyline,turnByTurnActions,actions,instructions,travelSummary'
+                        };
+                    
+                    router.calculateRoute(
+                    routeRequestParams,
+                    onSuccess,
+                    onError
+                    );
+                    }
+                    
+                    function onSuccess(result) {
+                    var route = result.routes[0];
+
+                    addRouteShapeToMap(route);
+                    //addManueversToMap(route);
+
+                    }
+                    
+                    function onError(error) {
+                    alert('Can\'t reach the remote server');
+                    }
+                    
+
+                    var mapContainer = document.getElementById('map')
+                    
+                    var platform = new H.service.Platform({
+                    apikey: 'JJglpCBU6_eRgX22WnMhhGoPiNEE2BD9LcUbiY0W2Ow'
+                    });
+                    
+                    var defaultLayers = platform.createDefaultLayers();
+                    
+                    var map = new H.Map(mapContainer,
+                    defaultLayers.vector.normal.map, {
+                    center: {lat: 52.5352, lng: 13.3780},
+                    zoom: 14
+                    });
+                    
+                    window.addEventListener('resize', () => map.getViewPort().resize());
+                    
+                    var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+                    // if (remove === true){
+                    //     map.removeObject(routeLine)
+                    // }
+                    var ui = H.ui.UI.createDefault(map, defaultLayers);
+                
+                    function addRouteShapeToMap(route) {
+                    route.sections.forEach((section) => {
+                    let linestring = H.geo.LineString.fromFlexiblePolyline(section.polyline);
+                    var routeOutline = new H.map.Polyline(linestring, {
+                    style: {
+                        lineWidth: 10,
+                        strokeColor: 'rgba(0, 128, 255, 0.7)',
+                        lineTailCap: 'arrow-tail',
+                        lineHeadCap: 'arrow-head'
+                    }
+                    });
+                    var routeArrows = new H.map.Polyline(linestring, {
+                    style: {
+                        lineWidth: 10,
+                        fillColor: 'white',
+                        strokeColor: 'rgba(255, 255, 255, 1)',
+                        lineDash: [0, 2],
+                        lineTailCap: 'arrow-tail',
+                        lineHeadCap: 'arrow-head' }
+                    }
+                    );
+                    var routeLine = new H.map.Group();
+                    routeLine.addObjects([routeOutline, routeArrows]);
+
+                    map.addObject(routeLine);
+                    map.getViewModel().setLookAtData({
+                      bounds: polyline.getBoundingBox()
+                    });
+                    });
+                    }
+                    
+                    // function addManueversToMap(route) {
+                    // var svgMarkup = '<svg width="18" height="18" ' +
+                    // 'xmlns="http://www.w3.org/2000/svg">' +
+                    // '<circle cx="8" cy="8" r="8" ' +
+                    //   'fill="#1b468d" stroke="white" stroke-width="1" />' +
+                    // '</svg>',
+                    // dotIcon = new H.map.Icon(svgMarkup, {anchor: {x:8, y:8}}),
+                    // group = new H.map.Group(),
+                    // i,
+                    // j;
+                    
+                    // route.sections.forEach((section) => {
+                    // let poly = H.geo.LineString.fromFlexiblePolyline(section.polyline).getLatLngAltArray();
+                    
+                    // let actions = section.actions;
+                    // for (i = 0; i < actions.length; i += 1) {
+                    //   let action = actions[i];
+                    //   var marker = new H.map.Marker({
+                    //     lat: poly[action.offset * 3],
+                    //     lng: poly[action.offset * 3 + 1]},
+                    //     {icon: dotIcon});
+                    //   marker.instruction = action.instruction;
+                    //   group.addObject(marker);
+                    // }
+                    
+                    // group.addEventListener('tap', function (evt) {
+                    //   map.setCenter(evt.target.getGeometry());
+                    //   openBubble(evt.target.getGeometry(), evt.target.instruction);
+                    // }, false);
+                    
+                    // map.addObject(group);
+                    // });
+                    // }
+                    
+                    function toMMSS(duration) {
+                    return Math.floor(duration / 60) + ' minutes ' + (duration % 60) + ' seconds.';
+                    }
+
+                    // function callUpdateMap() {
+                    //     var i = 0;
+                    //     const movements = ["52.5306,13.3826", "52.5290,13.3776", "52.5237,13.3579"]
+
+                    //     function updateMap(){
+                    //         setTimeout(function() {
+                    //             calculateRouteFromAtoB(platform, dest_addr, movements[i], true);
+                    //             i++;
+                    //             if (i < movements.length){
+                    //                 updateMap()
+                    //             }
+                    //         }, 15000)                            
+                    //     }
+
+                    //     updateMap();
+                    // }
+                    
+                    calculateRouteFromAtoB(platform, dest_addr, '52.5352,13.3780', false)
+
+                    </script>
+
                 </div>
             </div>
             <div class="row">

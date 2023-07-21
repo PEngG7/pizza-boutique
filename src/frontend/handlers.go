@@ -26,9 +26,11 @@ import (
 	"strings"
 	"time"
 
+	jwt "github.com/Siar-Akbayin/jwt-go-auth"
 	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc/metadata"
 
 	pb "github.com/GoogleCloudPlatform/microservices-demo/src/frontend/genproto"
 	"github.com/GoogleCloudPlatform/microservices-demo/src/frontend/money"
@@ -325,19 +327,55 @@ func (fe *frontendServer) viewCartHandler(w http.ResponseWriter, r *http.Request
 func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Request) {
 	log := r.Context().Value(ctxKeyLog{}).(logrus.FieldLogger)
 	log.Debug("placing order")
-
+	fmt.Printf("Request %v", r)
 	var (
-		email         = r.FormValue("email")
-		streetAddress = r.FormValue("street_address")
-		zipCode, _    = strconv.ParseInt(r.FormValue("zip_code"), 10, 32)
-		city          = r.FormValue("city")
-		state         = r.FormValue("state")
-		country       = r.FormValue("country")
-		ccNumber      = r.FormValue("credit_card_number")
-		ccMonth, _    = strconv.ParseInt(r.FormValue("credit_card_expiration_month"), 10, 32)
-		ccYear, _     = strconv.ParseInt(r.FormValue("credit_card_expiration_year"), 10, 32)
-		ccCVV, _      = strconv.ParseInt(r.FormValue("credit_card_cvv"), 10, 32)
+		email           = r.FormValue("email")
+		streetAddress   = r.FormValue("street_name")
+		streetNumber, _ = strconv.ParseInt(r.FormValue("street_number"), 10, 32)
+		zipCode, _      = strconv.ParseInt(r.FormValue("zip_code"), 10, 32)
+		city            = r.FormValue("city")
+		state           = r.FormValue("state")
+		country         = r.FormValue("country")
+		ccNumber        = r.FormValue("credit_card_number")
+		ccMonth, _      = strconv.ParseInt(r.FormValue("credit_card_expiration_month"), 10, 32)
+		ccYear, _       = strconv.ParseInt(r.FormValue("credit_card_expiration_year"), 10, 32)
+		ccCVV, _        = strconv.ParseInt(r.FormValue("credit_card_cvv"), 10, 32)
+		phone           = r.FormValue("phone")
+		name            = r.FormValue("name")
+		age, _          = strconv.ParseInt(r.FormValue("age"), 10, 32)
 	)
+
+	fmt.Println("IIIIIIIIIIIIIIII")
+
+	token, err := jwt.GenerateToken("policy.json", "trackingService-maximal", "purpose1", "key.pem", 100)
+	fmt.Println(err)
+	fmt.Println("HHHHHHHHHHHHHHHHHH")
+	fmt.Println(token)
+
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "authorization", token)
+	start := time.Now()
+	tracking, err := pb.NewTrackingServiceClient(fe.trackSvcConn).
+		GetPersonaldata(ctx, &pb.TrackingRequest{
+			Phone:                     phone,
+			StreetName:                streetAddress,
+			StreetNumber:              int32(streetNumber),
+			ZipCode:                   int32(zipCode),
+			City:                      city,
+			Country:                   country,
+			Email:                     email,
+			Name:                      name,
+			CreditCardNumber:          ccNumber,
+			CreditCardCvv:             int32(ccCVV),
+			CreditCardExpirationYear:  int32(ccYear),
+			CreditCardExpirationMonth: int32(ccMonth),
+			Age:                       int32(age),
+		})
+	duration := float64(time.Since(start).Microseconds())
+	interceptorDuration.Observe(duration)
+	fmt.Println("ZEITMESSUNG: ", duration)
+	fmt.Println("XXXXXXXXXXXXXXXX")
+	fmt.Println(tracking)
+	fmt.Println(err)
 
 	order, err := pb.NewCheckoutServiceClient(fe.checkoutSvcConn).
 		PlaceOrder(r.Context(), &pb.PlaceOrderRequest{
@@ -356,10 +394,13 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 				ZipCode:       int32(zipCode),
 				Country:       country},
 		})
+	fmt.Println(order)
+	fmt.Println(err)
 	if err != nil {
 		renderHTTPError(log, r, w, errors.Wrap(err, "failed to complete the order"), http.StatusInternalServerError)
 		return
 	}
+
 	log.WithField("order", order.GetOrder().GetOrderId()).Info("order placed")
 
 	order.GetOrder().GetItems()
@@ -391,6 +432,7 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 		"is_cymbal_brand":   isCymbalBrand,
 		"deploymentDetails": deploymentDetailsMap,
 		"frontendMessage":   frontendMessage,
+		"tracking":          tracking,
 	}); err != nil {
 		log.Println(err)
 	}
