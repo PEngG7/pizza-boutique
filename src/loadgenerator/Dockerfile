@@ -29,6 +29,10 @@ COPY --from=builder /install /usr/local
 # Add application code.
 COPY demo_pb2_grpc.py .
 COPY demo_pb2.py .
+COPY demo2_pb2_grpc.py .
+COPY demo2_pb2.py .
+COPY demo3_pb2_grpc.py .
+COPY demo3_pb2.py .
 COPY locustfile.py .
 
 # enable gevent support in debugger

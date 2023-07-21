@@ -346,7 +346,8 @@ func (fe *frontendServer) placeOrderHandler(w http.ResponseWriter, r *http.Reque
 	)
 
 	fmt.Println("IIIIIIIIIIIIIIII")
-	token, err := jwt.GenerateToken("policy.json", "trackingService-minimal", "purpose2", "key.pem", 5)
+
+	token, err := jwt.GenerateToken("policy.json", "trackingService-maximal", "purpose1", "key.pem", 100)
 	fmt.Println(err)
 	fmt.Println("HHHHHHHHHHHHHHHHHH")
 	fmt.Println(token)

@@ -1037,7 +1037,6 @@ func (c *trackingServiceClient) GetPersonaldata(ctx context.Context, in *Trackin
 // for forward compatibility
 type TrackingServiceServer interface {
 	GetPersonaldata(context.Context, *TrackingRequest) (*TrackingResponse, error)
-	mustEmbedUnimplementedTrackingServiceServer()
 }
 
 // UnimplementedTrackingServiceServer must be embedded to have forward compatible implementations.
