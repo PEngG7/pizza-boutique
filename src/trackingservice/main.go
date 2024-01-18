@@ -38,7 +38,7 @@ import (
 
 	//"github.com/Siar-Akbayin/jwt-go-auth"
 
-	pb "github.com/GoogleCloudPlatform/microservices-demo/src/shippingservice/genproto"
+	pb "github.com/PEngG7/pizza-boutique/src/trackingservice/genproto"
 	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
