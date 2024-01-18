@@ -1,4 +1,4 @@
-module github.com/GoogleCloudPlatform/microservices-demo/src/shippingservice
+module github.com/PEngG7/pizza-boutique/src/trackingservice
 
 go 1.19
 
@@ -9,6 +9,8 @@ require (
 	golang.org/x/net v0.10.0
 	google.golang.org/grpc v1.56.2
 	google.golang.org/protobuf v1.31.0
+	github.com/louisloechel/purpl v0.1.2
+
 
 )
 
