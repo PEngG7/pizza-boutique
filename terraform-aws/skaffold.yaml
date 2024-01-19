@@ -24,28 +24,28 @@ build:
   # https://skaffold.dev/docs/concepts/#image-repository-handling
   - image: public.ecr.aws/n1l5s1s3/emailservice
     context: ../src/emailservice
-#  - image: public.ecr.aws/n1l5s1s3/productcatalogservice
-#    context: ../src/productcatalogservice
+  - image: public.ecr.aws/n1l5s1s3/productcatalogservice
+    context: ../src/productcatalogservice
   - image: public.ecr.aws/n1l5s1s3/recommendationservice
     context: ../src/recommendationservice
-#  - image: public.ecr.aws/n1l5s1s3/shippingservice
-#    context: ../src/shippingservice
-#  - image: public.ecr.aws/n1l5s1s3/checkoutservice
-#    context: ../src/checkoutservice
+  - image: public.ecr.aws/n1l5s1s3/shippingservice
+    context: ../src/shippingservice
+  - image: public.ecr.aws/n1l5s1s3/checkoutservice
+    context: ../src/checkoutservice
   - image: public.ecr.aws/n1l5s1s3/paymentservice
     context: ../src/paymentservice
   - image: public.ecr.aws/n1l5s1s3/currencyservice
     context: ../src/currencyservice
-#  - image: public.ecr.aws/n1l5s1s3/cartservice
-#    context: ../src/cartservice/src
-#    docker:
-#      dockerfile: Dockerfile
-#  - image: public.ecr.aws/n1l5s1s3/frontend
-#    context: ../src/frontend
+  - image: public.ecr.aws/n1l5s1s3/cartservice
+    context: ../src/cartservice/src
+    docker:
+      dockerfile: Dockerfile
+  - image: public.ecr.aws/n1l5s1s3/frontend
+    context: ../src/frontend
   - image: public.ecr.aws/n1l5s1s3/adservice
     context: ../src/adservice
-#  - image: public.ecr.aws/n1l5s1s3/trackingservice
-#    context: ../src/trackingservice
+  - image: public.ecr.aws/n1l5s1s3/trackingservice
+    context: ../src/trackingservice
   tagPolicy:
     gitCommit: {}
   local:
@@ -90,20 +90,20 @@ profiles:
   - op: add
     path: /manifests/kustomize/paths/1
     value: kustomize/components/network-policies
----
-apiVersion: skaffold/v3
-kind: Config
-metadata:
-  name: loadgenerator
-requires:
-- configs:
-  - app
-build:
-  artifacts:
-  - image: loadgenerator
-    context: ../src/loadgenerator
-manifests:
-  rawYaml:
-  - ./kubernetes-manifests-aws/loadgenerator.yaml
-deploy:
-  kubectl: {}
+#---
+#apiVersion: skaffold/v3
+#kind: Config
+#metadata:
+#  name: loadgenerator
+#requires:
+#- configs:
+#  - app
+#build:
+#  artifacts:
+#  - image: loadgenerator
+#    context: ../src/loadgenerator
+#manifests:
+#  rawYaml:
+#  - ./kubernetes-manifests-aws/loadgenerator.yaml
+#deploy:
+#  kubectl: {}
