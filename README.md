@@ -28,10 +28,10 @@ and Amazon Web Services.
 
 | Home Page                                                                   | Checkout Screen                                                              |
 |-----------------------------------------------------------------------------|------------------------------------------------------------------------------|
-| [![Screenshot of store homepage](/docs/img/pizza.png)](/docs/img/pizza.png) | [![Screenshot of checkout screen](/docs/img/order.ong)](/docs/img/order.png) |
+| [![Screenshot of store homepage](/docs/img/pizza.png)](/docs/img/pizza.png) | [![Screenshot of checkout screen](/docs/img/order.png)](/docs/img/order.png) |
 
 
-
+<br /><br /><br /><br /><br /><br /><br />
 
 
 # Original README
