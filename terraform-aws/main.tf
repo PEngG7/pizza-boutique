@@ -78,22 +78,29 @@ resource "terraform_data" "fetch_aws_endpoint" {
   depends_on = [module.eks]
 }
 
-resource "terraform_data" "aws_login" {
+resource "terraform_data" "apply_manifests" {
   provisioner "local-exec" {
     interpreter = ["bash", "-exc"]
-    command = "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/n1l5s1s3"
+    command = "kubectl apply -k ../kubernetes-manifests-aws/"
   }
-  depends_on = [module.eks, terraform_data.fetch_aws_endpoint]
+  depends_on = [terraform_data.fetch_aws_endpoint]
+}
+
+# Waiting time to let service get ready
+resource "terraform_data" "wait" {
+  provisioner "local-exec" {
+    command = "sleep 30"
+  }
+  depends_on = [terraform_data.apply_manifests]
 }
 
 
-
-resource "terraform_data" "run_skaffold" {
-  provisioner "local-exec" {
-    interpreter = ["bash", "-exc"]
-    command = "skaffold run"
-  }
-  depends_on = [module.eks, terraform_data.fetch_aws_endpoint, terraform_data.aws_login]
+data "external" "external_ip" {
+  program = ["bash", "-c", "kubectl get svc frontend-external -o json | jq -n '{ gateway_ip: input.status.loadBalancer.ingress[0].hostname }'"]
+  depends_on = [terraform_data.apply_manifests]
 }
 
-
+output "gateway_ip" {
+  value = data.external.external_ip.result.gateway_ip
+  depends_on = [data.external.external_ip]
+}

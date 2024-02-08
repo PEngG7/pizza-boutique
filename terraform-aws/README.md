@@ -1,3 +1,17 @@
+# Purpose
+This Terraform configuration provisions an AWS infrastructure with an Elastic Kubernetes Service (EKS) cluster, configures 
+access, and deploys Kubernetes manifests. It creates a security group for traffic management, sets up an EKS cluster with 
+a managed node group, and updates the kubeconfig for cluster access. Additionally, it applies Kubernetes manifests from a 
+local directory, waits for services to initialize, and retrieves the external IP of a deployed service, outputting it for 
+external access.
+
+# Prerequisites
+aws CLI (https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+
+kubectl (https://kubernetes.io/docs/tasks/tools/)
+
+
+# Setup
 Navigate to the terraform-aws folder and run the following commands:
 ```shell
 terraform init

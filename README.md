@@ -2,6 +2,44 @@
 	<img src="purpl.png" width=50" />
 </p>
 
+# Pizza Boutique
+We modified the sample microservice architecture [Online Boutique](https://github.com/GoogleCloudPlatform/microservices-demo/) from the Google Cloud Platform
+to a pizza delivery service. The original README is included below.
+
+We use this project to demonstrate [purpl](https://github.com/PrivacyEngineering/purpl), our tool for hook-in privacy techniques for
+gRPC-based microservice communication.
+
+Food delivery platforms, being global services, handle sensitive personal information, including addresses, payment details,
+and demographic data, which is shared with various parties such as restaurants and delivery personnel, and used internally for
+research and marketing. It's crucial to limit access to certain data, like banking information, to prevent misuse and comply
+with regulations like GDPR, emphasizing the importance of data minimization. For targeted marketing, generalized data, such
+as age ranges or residential districts, is sufficient, avoiding the need for detailed personal information.
+
+## Setup
+This project is designed to run on Kubernetes, and we provide Terraform scripts to deploy it on Google Kubernetes Engine (GKE)
+and Amazon Web Services.
+
+[Set up on AWS](https://github.com/PrivacyEngineering/purpl-pizza-boutique/tree/main/terraform-aws)
+
+[Set up on GCP](https://github.com/PrivacyEngineering/purpl-pizza-boutique/tree/main/terraform-gcp)
+
+
+## Screenshots
+
+| Home Page                                                                   | Checkout Screen                                                              |
+|-----------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| [![Screenshot of store homepage](/docs/img/pizza.png)](/docs/img/pizza.png) | [![Screenshot of checkout screen](/docs/img/order.ong)](/docs/img/order.png) |
+
+
+
+
+
+# Original README
+
+<p align="center">
+<img src="/src/frontend/static/icons/Hipster_HeroLogoMaroon.svg" width="300" alt="Online Boutique" />
+</p>
+
 ![Continuous Integration](https://github.com/GoogleCloudPlatform/microservices-demo/workflows/Continuous%20Integration%20-%20Main/Release/badge.svg)
 
 **Online Boutique** is a cloud-first microservices demo application.
@@ -31,8 +69,8 @@ If you’re using this demo, please **★Star** this repository to show your int
 ## Quickstart (GKE)
 
 1. Ensure you have the following requirements:
-   - [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project).
-   - Shell environment with `gcloud`, `git`, and `kubectl`.
+    - [Google Cloud project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project).
+    - Shell environment with `gcloud`, `git`, and `kubectl`.
 
 2. Clone the repository.
 
@@ -185,10 +223,10 @@ See the [Development guide](/docs/development-guide.md) to learn how to run and 
 - [Anthos Service Mesh Workshop: Lab Guide](https://codelabs.developers.google.com/codelabs/anthos-service-mesh-workshop)
 - [KubeCon EU 2019 - Reinventing Networking: A Deep Dive into Istio's Multicluster Gateways - Steve Dake, Independent](https://youtu.be/-t2BfT59zJA?t=982)
 - Google Cloud Next'18 SF
-  - [Day 1 Keynote](https://youtu.be/vJ9OaAqfxo4?t=2416) showing GKE On-Prem
-  - [Day 3 Keynote](https://youtu.be/JQPOPV_VH5w?t=815) showing Stackdriver
-    APM (Tracing, Code Search, Profiler, Google Cloud Build)
-  - [Introduction to Service Management with Istio](https://www.youtube.com/watch?v=wCJrdKdD6UM&feature=youtu.be&t=586)
+    - [Day 1 Keynote](https://youtu.be/vJ9OaAqfxo4?t=2416) showing GKE On-Prem
+    - [Day 3 Keynote](https://youtu.be/JQPOPV_VH5w?t=815) showing Stackdriver
+      APM (Tracing, Code Search, Profiler, Google Cloud Build)
+    - [Introduction to Service Management with Istio](https://www.youtube.com/watch?v=wCJrdKdD6UM&feature=youtu.be&t=586)
 - [Google Cloud Next'18 London – Keynote](https://youtu.be/nIq2pkNcfEI?t=3071)
   showing Stackdriver Incident Response Management
 
